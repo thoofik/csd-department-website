@@ -14,14 +14,8 @@ const HeroSection: React.FC = () => {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
   
   // Use theme with fallback to prevent errors
-  let theme: 'light' | 'dark' = 'light';
-  try {
-    const themeContext = useTheme();
-    theme = themeContext.theme;
-  } catch (error) {
-    // Fallback to light theme if context is not available
-    theme = 'light';
-  }
+  const themeContext = useTheme();
+  const theme = themeContext.theme;
 
   const animatedTexts = [
     "Computer Science & Design",

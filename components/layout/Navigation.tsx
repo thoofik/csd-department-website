@@ -17,14 +17,8 @@ const Navigation: React.FC = () => {
   const pathname = usePathname();
   
   // Use theme with fallback to prevent errors
-  let theme: 'light' | 'dark' = 'light';
-  try {
-    const themeContext = useTheme();
-    theme = themeContext.theme;
-  } catch (error) {
-    // Fallback to light theme if context is not available
-    theme = 'light';
-  }
+  const themeContext = useTheme();
+  const theme = themeContext.theme;
 
   const navigationItems: NavigationItem[] = [
     { name: 'Home', href: '/' },
@@ -59,12 +53,12 @@ const Navigation: React.FC = () => {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full ${
       isScrolled 
         ? 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 shadow-soft border-b border-blue-100 backdrop-blur-md dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 dark:border-gray-700 dark:border-gray-600' 
         : 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 shadow-soft backdrop-blur-md dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 dark:shadow-none dark:border-transparent'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex justify-between items-center h-16 sm:h-20">
           {/* Logo */}
           <motion.div

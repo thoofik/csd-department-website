@@ -408,13 +408,21 @@ const AboutSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
               viewport={{ once: true }}
+              className="group"
             >
-              <div className="card-gradient h-full p-6 sm:p-8 text-center group">
-                <div className={`w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${feature.color} rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+              <div className="gradient-border">
+                <div className="gradient-border-content">
+                  <Card 
+                    className="p-6 sm:p-8 h-full text-center"
+                  >
+                
+                <div className={`w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${feature.color} rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg`}>
                   <feature.icon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                 </div>
                 <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-800 dark:text-white">{feature.title}</h3>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">{feature.description}</p>
+                  </Card>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -550,7 +558,7 @@ const FacultySection: React.FC = () => {
                       <img
                         src={faculty.image}
                         alt={faculty.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-top"
                       />
                     </div>
                     
@@ -616,7 +624,7 @@ const FacultySection: React.FC = () => {
                       <img
                         src={selectedFaculty.image}
                         alt={selectedFaculty.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-top"
                       />
                     </div>
                     
@@ -750,68 +758,73 @@ const AchievementsSection: React.FC = () => {
               viewport={{ once: true }}
               className="group"
             >
-              <div className="gradient-border cursor-pointer relative z-10 transition-transform duration-300 group-hover:scale-105">
-                <div className="gradient-border-content p-4 sm:p-6 lg:p-8">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                    {achievement.pdfFile ? (
-                      <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 dark:text-blue-400" />
-                    ) : (
-                      <Trophy className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 dark:text-blue-400" />
-                    )}
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-800 dark:text-white">{achievement.title}</h3>
-                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-3 sm:mb-4 leading-relaxed">{achievement.description}</p>
-                  <div className="text-xs sm:text-sm text-blue-600 dark:text-blue-400 font-medium mb-2 sm:mb-3">
-                    {achievement.date} • {achievement.category}
-                  </div>
-                  {achievement.participants && (
-                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 sm:mb-4">
-                      <span className="font-medium">Participants:</span> {achievement.participants.join(', ')}
-                    </div>
+              <div className="gradient-border">
+                <div className="gradient-border-content">
+                  <Card 
+                    className="p-4 sm:p-6 lg:p-8 h-full"
+                  >
+                
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  {achievement.pdfFile ? (
+                    <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 dark:text-blue-400" />
+                  ) : (
+                    <Trophy className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 dark:text-blue-400" />
                   )}
-                  {achievement.pdfFile && (
-                    <div className="mt-3 sm:mt-4">
-                      {achievement.additionalPdfFile ? (
-                        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                          <button
-                            onClick={() => openPdfInNewTab(achievement.additionalPdfFile!)}
-                            className="inline-flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 font-medium text-sm"
-                          >
-                            <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
-                            <span>2023 Newsletter</span>
-                          </button>
-                          <button
-                            onClick={() => openPdfInNewTab(achievement.pdfFile!)}
-                            className="inline-flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-medium text-sm"
-                          >
-                            <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
-                            <span>2024 Newsletter</span>
-                          </button>
-                        </div>
-                      ) : (
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-800 dark:text-white">{achievement.title}</h3>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-3 sm:mb-4 leading-relaxed">{achievement.description}</p>
+                <div className="text-xs sm:text-sm text-blue-600 dark:text-blue-400 font-medium mb-2 sm:mb-3">
+                  {achievement.date} • {achievement.category}
+                </div>
+                {achievement.participants && (
+                  <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 sm:mb-4">
+                    <span className="font-medium">Participants:</span> {achievement.participants.join(', ')}
+                  </div>
+                )}
+                {achievement.pdfFile && (
+                  <div className="mt-3 sm:mt-4">
+                    {achievement.additionalPdfFile ? (
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                         <button
-                          onClick={() => openPdfInNewTab(achievement.pdfFile!)}
-                          className="inline-flex items-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-medium text-sm"
+                          onClick={() => openPdfInNewTab(achievement.additionalPdfFile!)}
+                          className="inline-flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 font-medium text-sm"
                         >
                           <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
-                          <span>View Newsletter</span>
+                          <span>2023 Newsletter</span>
                         </button>
-                      )}
-                    </div>
-                  )}
-                  {achievement.externalLink && (
-                    <div className="mt-3 sm:mt-4">
-                      <a
-                        href={achievement.externalLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-medium text-sm"
+                        <button
+                          onClick={() => openPdfInNewTab(achievement.pdfFile!)}
+                          className="inline-flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-medium text-sm"
+                        >
+                          <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
+                          <span>2024 Newsletter</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => openPdfInNewTab(achievement.pdfFile!)}
+                        className="inline-flex items-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-medium text-sm"
                       >
-                        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
-                        <span>Visit Website</span>
-                      </a>
-                    </div>
-                  )}
+                        <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <span>View Newsletter</span>
+                      </button>
+                    )}
+                  </div>
+                )}
+                {achievement.externalLink && (
+                  <div className="mt-3 sm:mt-4">
+                    <a
+                      href={achievement.externalLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-medium text-sm"
+                    >
+                      <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span>Visit Website</span>
+                    </a>
+                  </div>
+                )}
+                  </Card>
                 </div>
               </div>
             </motion.div>
@@ -1060,10 +1073,10 @@ const ContactSection: React.FC = () => {
 // Compact Footer
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 text-white py-6 sm:py-8 relative overflow-hidden">
+    <footer className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 text-white py-6 sm:py-8 relative overflow-hidden w-full">
       <div className="absolute inset-0 bg-pattern opacity-10 dark:opacity-20" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
           {/* Logo and Institution Info */}
           <div className="flex items-center space-x-3 sm:space-x-4">
@@ -1098,7 +1111,7 @@ const Footer: React.FC = () => {
 // Main App Component
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen w-full overflow-x-hidden">
       <Navigation />
       <HeroSection />
       <AboutSection />

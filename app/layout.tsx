@@ -35,9 +35,11 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} min-h-screen overflow-x-hidden`}>
         <ThemeProvider>
-          {children}
+          <div className="min-h-screen w-full">
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>

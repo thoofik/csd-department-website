@@ -36,22 +36,49 @@ const StudentTable: React.FC<StudentTableProps> = ({ students, title, delay = 0,
       return matchesSearch;
     });
 
-    filtered.sort((a, b) => {
-      const aValue = a[sortField];
-      const bValue = b[sortField];
-      
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return sortDirection === 'asc' 
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      }
-      
-      if (typeof aValue === 'number' && typeof bValue === 'number') {
-        return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
-      }
-      
-      return 0;
-    });
+    // Only apply sorting if user has explicitly changed from default USN sorting
+    if (sortField !== 'usn' || sortDirection !== 'asc') {
+      filtered.sort((a, b) => {
+        // First sort by batch: 7th-sem first, then 5th-sem
+        const batchOrder = { '7th-sem': 0, '5th-sem': 1 };
+        const aBatchOrder = batchOrder[a.batch as keyof typeof batchOrder] ?? 2;
+        const bBatchOrder = batchOrder[b.batch as keyof typeof batchOrder] ?? 2;
+        
+        if (aBatchOrder !== bBatchOrder) {
+          return aBatchOrder - bBatchOrder;
+        }
+        
+        // Within the same batch, sort by the selected field
+        const aValue = a[sortField];
+        const bValue = b[sortField];
+        
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          // Custom USN sorting for USN field
+          if (sortField === 'usn') {
+            const extractNumber = (usn: string) => {
+              const match = usn.match(/(\d+)$/);
+              return match ? parseInt(match[1], 10) : 0;
+            };
+            
+            const aNum = extractNumber(aValue);
+            const bNum = extractNumber(bValue);
+            
+            return sortDirection === 'asc' ? aNum - bNum : bNum - aNum;
+          }
+          
+          return sortDirection === 'asc' 
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        }
+        
+        if (typeof aValue === 'number' && typeof bValue === 'number') {
+          return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+        }
+        
+        return 0;
+      });
+    }
+    // If using default USN ascending sort, preserve the incoming order (which is already correctly sorted)
 
     return filtered;
   }, [students, searchTerm, sortField, sortDirection]);

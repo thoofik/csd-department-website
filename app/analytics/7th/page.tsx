@@ -71,6 +71,16 @@ const SeventhSemAnalyticsPage: React.FC = () => {
       if (selectedStatus !== 'all' && student.placement_status !== selectedStatus) return false;
       
       return true;
+    }).sort((a, b) => {
+      // Simple USN sorting - CGO students first, then CG students
+      const aIsCGO = a.usn.includes('CGO');
+      const bIsCGO = b.usn.includes('CGO');
+      
+      if (aIsCGO && !bIsCGO) return -1;
+      if (!aIsCGO && bIsCGO) return 1;
+      
+      // If both are same type, sort by USN normally
+      return a.usn.localeCompare(b.usn);
     });
   }, [apiStudents, selectedUSN, selectedBacklogs, selectedStatus]);
   
@@ -105,7 +115,7 @@ const SeventhSemAnalyticsPage: React.FC = () => {
 
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-12">
             <StudentStatsCard
               title="Total Students"
               value={students.length}
@@ -121,6 +131,13 @@ const SeventhSemAnalyticsPage: React.FC = () => {
               icon={Filter as any}
               color="text-green-600"
               bgColor="bg-green-100"
+            />
+            <StudentStatsCard
+              title="Average CGPA"
+              value={`${Math.min(averageAggregate / 10, 10.0).toFixed(2)}`}
+              icon={TrendingUp}
+              color="text-indigo-600"
+              bgColor="bg-indigo-100"
             />
             <StudentStatsCard
               title="Placement Eligible"

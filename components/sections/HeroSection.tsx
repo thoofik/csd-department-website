@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sparkles, BarChart3 } from 'lucide-react';
 import Button from '../ui/Button';
+import { useTheme } from '../../contexts/ThemeContext';
 
 
 const HeroSection: React.FC = () => {
@@ -11,6 +12,16 @@ const HeroSection: React.FC = () => {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 100]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  
+  // Use theme with fallback to prevent errors
+  let theme: 'light' | 'dark' = 'light';
+  try {
+    const themeContext = useTheme();
+    theme = themeContext.theme;
+  } catch (error) {
+    // Fallback to light theme if context is not available
+    theme = 'light';
+  }
 
   const animatedTexts = [
     "Computer Science & Design",
@@ -55,28 +66,19 @@ const HeroSection: React.FC = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="mb-4 sm:mb-6"
+            className="mb-2 sm:mb-3"
           >
-            <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 mx-auto relative">
-              {/* Clean Logo Container */}
-              <div className="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-2 sm:p-3 shadow-2xl border-2 sm:border-4 border-white dark:border-gray-700 relative">
-                {/* Logo Image */}
-                <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-800 relative">
-                  <img 
-                    src="/pesitm-csd-designers-logo.jpg" 
-                    alt="PESITM CSD DESIGNERS Logo" 
-                    className="w-full h-full object-contain rounded-full"
-                    onError={(e) => {
-                      console.error('Failed to load logo image');
-                      e.currentTarget.style.display = 'none';
-                    }}
-                    loading="eager"
-                  />
-                </div>
-                
-                {/* Clean Border */}
-                <div className="absolute inset-0 rounded-full border border-blue-200 dark:border-blue-600" />
-              </div>
+            <div className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 xl:w-72 xl:h-72 mx-auto relative">
+              <img 
+                src={theme === 'dark' ? "/dark-logo.png?v=3" : "/light-logo.png?v=3"} 
+                alt="PESITM CSD DESIGNERS Logo" 
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  console.error('Failed to load logo image');
+                  e.currentTarget.style.display = 'none';
+                }}
+                loading="eager"
+              />
               
               {/* Subtle Floating Elements */}
               <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 bg-blue-300/20 dark:bg-blue-400/20 rounded-full animate-pulse" />

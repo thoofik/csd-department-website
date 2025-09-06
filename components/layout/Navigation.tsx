@@ -77,11 +77,11 @@ const Navigation: React.FC = () => {
               {/* Logo Container with Clean Design */}
               <div className="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100 p-1 shadow-lg border-2 border-white relative dark:from-blue-900/30 dark:to-blue-800/30">
                 {/* Logo Image */}
-                <div className="w-full h-full rounded-full overflow-hidden bg-white relative dark:bg-gray-800">
+                <div className="w-full h-full relative flex items-center justify-center">
                   <img 
-                    src="/pesitm-csd-designers-logo.jpg" 
+                    src={theme === 'dark' ? "/dark-logo.png?v=3" : "/light-logo.png?v=3"} 
                     alt="PESITM CSD DESIGNERS Logo" 
-                    className="w-full h-full object-contain rounded-full"
+                    className="w-[110%] h-[110%] object-contain"
                     onError={(e) => {
                       console.error('Failed to load logo image');
                       e.currentTarget.style.display = 'none';

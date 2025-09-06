@@ -68,7 +68,27 @@ const AnalyticsPage: React.FC = () => {
             }
           }
           
-          setStudents(allStudents);
+          setStudents(allStudents.sort((a, b) => {
+            // First sort by batch: 7th-sem first, then 5th-sem
+            const batchOrder = { '7th-sem': 0, '5th-sem': 1 };
+            const aBatchOrder = batchOrder[a.batch as keyof typeof batchOrder] ?? 2;
+            const bBatchOrder = batchOrder[b.batch as keyof typeof batchOrder] ?? 2;
+            
+            if (aBatchOrder !== bBatchOrder) {
+              return aBatchOrder - bBatchOrder;
+            }
+            
+            // Within the same batch, sort by USN numerically
+            const extractNumber = (usn: string) => {
+              const match = usn.match(/(\d+)$/);
+              return match ? parseInt(match[1], 10) : 0;
+            };
+            
+            const aNum = extractNumber(a.usn);
+            const bNum = extractNumber(b.usn);
+            
+            return aNum - bNum;
+          }));
           
           // Save to localStorage for offline access
           localStorage.setItem('studentData', JSON.stringify(data));
@@ -99,7 +119,27 @@ const AnalyticsPage: React.FC = () => {
               }
             }
             
-            setStudents(allStudents);
+            setStudents(allStudents.sort((a, b) => {
+              // First sort by batch: 7th-sem first, then 5th-sem
+              const batchOrder = { '7th-sem': 0, '5th-sem': 1 };
+              const aBatchOrder = batchOrder[a.batch as keyof typeof batchOrder] ?? 2;
+              const bBatchOrder = batchOrder[b.batch as keyof typeof batchOrder] ?? 2;
+              
+              if (aBatchOrder !== bBatchOrder) {
+                return aBatchOrder - bBatchOrder;
+              }
+              
+              // Within the same batch, sort by USN numerically
+              const extractNumber = (usn: string) => {
+                const match = usn.match(/(\d+)$/);
+                return match ? parseInt(match[1], 10) : 0;
+              };
+              
+              const aNum = extractNumber(a.usn);
+              const bNum = extractNumber(b.usn);
+              
+              return aNum - bNum;
+            }));
           } catch (e) {
             console.error('Error parsing saved data:', e);
           }
@@ -151,6 +191,26 @@ const AnalyticsPage: React.FC = () => {
       }
       
       return true;
+    }).sort((a, b) => {
+      // First sort by batch: 7th-sem first, then 5th-sem
+      const batchOrder = { '7th-sem': 0, '5th-sem': 1 };
+      const aBatchOrder = batchOrder[a.batch as keyof typeof batchOrder] ?? 2;
+      const bBatchOrder = batchOrder[b.batch as keyof typeof batchOrder] ?? 2;
+      
+      if (aBatchOrder !== bBatchOrder) {
+        return aBatchOrder - bBatchOrder;
+      }
+      
+      // Within the same batch, sort by USN numerically
+      const extractNumber = (usn: string) => {
+        const match = usn.match(/(\d+)$/);
+        return match ? parseInt(match[1], 10) : 0;
+      };
+      
+      const aNum = extractNumber(a.usn);
+      const bNum = extractNumber(b.usn);
+      
+      return aNum - bNum;
     });
   }, [selectedBatch, selectedUSN, selectedBacklogs, selectedStatus, selectedEligibility, students]);
   
@@ -244,7 +304,27 @@ const AnalyticsPage: React.FC = () => {
           }
         }
         
-        setStudents(allStudents);
+        setStudents(allStudents.sort((a, b) => {
+          // First sort by batch: 7th-sem first, then 5th-sem
+          const batchOrder = { '7th-sem': 0, '5th-sem': 1 };
+          const aBatchOrder = batchOrder[a.batch as keyof typeof batchOrder] ?? 2;
+          const bBatchOrder = batchOrder[b.batch as keyof typeof batchOrder] ?? 2;
+          
+          if (aBatchOrder !== bBatchOrder) {
+            return aBatchOrder - bBatchOrder;
+          }
+          
+          // Within the same batch, sort by USN numerically
+          const extractNumber = (usn: string) => {
+            const match = usn.match(/(\d+)$/);
+            return match ? parseInt(match[1], 10) : 0;
+          };
+          
+          const aNum = extractNumber(a.usn);
+          const bNum = extractNumber(b.usn);
+          
+          return aNum - bNum;
+        }));
       } catch (e) {
         console.error('Error parsing saved data:', e);
       }
@@ -424,7 +504,7 @@ const AnalyticsPage: React.FC = () => {
                 </p>
               </div>
               
-                                                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8 max-w-[1400px] mx-auto">
+                                                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-6 lg:gap-8 max-w-[1400px] mx-auto">
                   <StudentStatsCard
                     title="Total Students"
                     value={displayAnalytics.totalStudents}
@@ -442,6 +522,15 @@ const AnalyticsPage: React.FC = () => {
                     bgColor="bg-green-100 dark:bg-green-900/30"
                     description="Overall performance"
                     delay={0.2}
+                  />
+                  <StudentStatsCard
+                    title="Average CGPA"
+                    value={`${Math.min(displayAnalytics.averageAggregate / 10, 10.0).toFixed(2)}`}
+                    icon={BookOpen}
+                    color="text-indigo-600 dark:text-indigo-400"
+                    bgColor="bg-indigo-100 dark:bg-indigo-900/30"
+                    description="Converted from percentage"
+                    delay={0.25}
                   />
                   <StudentStatsCard
                     title="Placement Eligible"

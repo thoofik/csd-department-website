@@ -78,6 +78,23 @@ const facultyMembers: FacultyMember[] = [
      ]
    },
      {
+     id: "5",
+     name: "Mrs. Kavya S",
+     position: "Assistant Professor",
+     qualification: "B.E, M.Tech",
+     specialization: ["Computer Science", "Machine Learning", "AI", "IoT", "Precision Farming", "Agriculture Technology", "Computer Vision"],
+     experience: "10 Years",
+     contact: "kavyas1828@pestrust.edu.in",
+     phone: "8296317636",
+     image: "/mrs-kavya-s.jpg",
+     achievements: ["AI Research", "Machine Learning", "Innovation", "Research Publications", "IoT and ML Solutions", "Computer Vision Applications"],
+     publications: [
+       "Integrated IoT and Machine Learning Solutions for Precision Farming: Crop Recommendation and Leaf Disease Diagnosis - 2024 8th International Conference on I-SMAC (IoT in Social, Mobile, Analytics and Cloud) (I-SMAC)",
+       "Crop Disease Identification using Computer Vision and Machine Learning Technique - Published in the International Journal of Advanced Scientific Innovation, Volume-6, Issue-8, May 2024",
+       "Revolutionizing in agriculture through technology - National-Level Conference Pravarthana-2024 at SEACET, December 2024"
+     ]
+   },
+     {
      id: "3",
      name: "Mr. Manjunatha G",
      position: "Assistant Professor",
@@ -126,23 +143,6 @@ const facultyMembers: FacultyMember[] = [
      achievements: ["Database Expertise", "Web Development", "Student Projects", "Research Publications", "IoT and ML Solutions"],
      publications: [
        "Integrated IoT and Machine Learning Solutions for Precision Farming: Crop Recommendation and Leaf Disease Diagnosis - 2024 8th International Conference on I-SMAC (IoT in Social, Mobile, Analytics and Cloud) (I-SMAC)",
-       "Revolutionizing in agriculture through technology - National-Level Conference Pravarthana-2024 at SEACET, December 2024"
-     ]
-   },
-     {
-     id: "5",
-     name: "Mrs. Kavya S",
-     position: "Assistant Professor",
-     qualification: "B.E, M.Tech",
-     specialization: ["Computer Science", "Machine Learning", "AI", "IoT", "Precision Farming", "Agriculture Technology", "Computer Vision"],
-     experience: "10 Years",
-     contact: "kavyas1828@pestrust.edu.in",
-     phone: "8296317636",
-     image: "/mrs-kavya-s.jpg",
-     achievements: ["AI Research", "Machine Learning", "Innovation", "Research Publications", "IoT and ML Solutions", "Computer Vision Applications"],
-     publications: [
-       "Integrated IoT and Machine Learning Solutions for Precision Farming: Crop Recommendation and Leaf Disease Diagnosis - 2024 8th International Conference on I-SMAC (IoT in Social, Mobile, Analytics and Cloud) (I-SMAC)",
-       "Crop Disease Identification using Computer Vision and Machine Learning Technique - Published in the International Journal of Advanced Scientific Innovation, Volume-6, Issue-8, May 2024",
        "Revolutionizing in agriculture through technology - National-Level Conference Pravarthana-2024 at SEACET, December 2024"
      ]
    },
@@ -431,13 +431,13 @@ const FacultySection: React.FC = () => {
     document.body.style.position = 'unset';
     document.body.style.width = 'unset';
     
-    // Scroll back to faculty section
+    // Ensure we stay in faculty section after closing modal
     setTimeout(() => {
       const facultySection = document.getElementById('faculty');
       if (facultySection) {
         facultySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }, 100);
+    }, 50);
   };
 
   // Prevent body scrolling when modal is open
@@ -523,8 +523,8 @@ const FacultySection: React.FC = () => {
               className="group"
             >
                              <Card 
-                 className="p-3 sm:p-4 h-auto cursor-pointer relative z-10 transition-transform duration-300 group-hover:scale-105" 
-                 onClick={() => openModal(faculty)}
+                 className={`p-3 sm:p-4 h-auto relative z-10 transition-transform duration-300 group-hover:scale-105 ${faculty.name === "Mr. Shivakumar S V" ? "cursor-default" : "cursor-pointer"}`}
+                 onClick={faculty.name === "Mr. Shivakumar S V" ? undefined : () => openModal(faculty)}
                >
                  {/* Blurred background effect */}
                  <div className="absolute inset-0 bg-white/80 dark:bg-transparent backdrop-blur-sm rounded-xl opacity-0 group-hover:opacity-100 dark:group-hover:opacity-0 transition-all duration-300 -z-10" />
@@ -555,7 +555,7 @@ const FacultySection: React.FC = () => {
                     {/* Add spacing for cards without qualification to maintain consistent height */}
                     {!faculty.qualification && (
                       <div className="mt-6 sm:mt-8">
-                        <div className="h-6 sm:h-8"></div>
+                        <div className="h-4 sm:h-6"></div>
                       </div>
                     )}
                 </div>
@@ -567,14 +567,14 @@ const FacultySection: React.FC = () => {
         {/* Faculty Detail Modal */}
         {isModalOpen && selectedFaculty && (
           <div 
-            className="fixed inset-0 bg-black/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4 sm:p-6"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md z-[99999] flex items-center justify-center p-4 sm:p-6"
             onClick={closeModal}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl max-w-5xl w-full max-h-[90vh] relative shadow-2xl z-[10000]"
+              className="bg-white dark:bg-gray-800 rounded-2xl max-w-5xl w-full max-h-[90vh] relative shadow-2xl z-[100000]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header with Close Button */}
@@ -623,7 +623,6 @@ const FacultySection: React.FC = () => {
                       <div>
                         <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-1 sm:mb-2 text-sm sm:text-base">Contact</h4>
                         <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{selectedFaculty.contact}</p>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{selectedFaculty.phone}</p>
                       </div>
                     </div>
                   </div>

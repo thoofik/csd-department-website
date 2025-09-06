@@ -18,6 +18,12 @@ const gradeFromPercent = (p: number) => {
   return 'F';
 };
 
+const cgpaFromPercent = (p: number) => {
+  // Standard conversion: CGPA = (Percentage / 10) with max 10.0
+  const cgpa = Math.min(p / 10, 10.0);
+  return cgpa.toFixed(2);
+};
+
 const StudentDetailPage: React.FC = () => {
   const params = useParams<{ usn: string }>();
   const [apiStudent, setApiStudent] = useState<Student | null>(null);
@@ -185,7 +191,11 @@ const StudentDetailPage: React.FC = () => {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Aggregate %</span>
-                <span className="font-semibold text-gray-900 dark:text-white">{student.aggregate_percentage}</span>
+                <span className="font-semibold text-gray-900 dark:text-white">{student.aggregate_percentage}%</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-600 dark:text-gray-400">CGPA</span>
+                <span className="font-semibold text-gray-900 dark:text-white">{cgpaFromPercent(student.aggregate_percentage)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Active Backlogs</span>
@@ -203,6 +213,7 @@ const StudentDetailPage: React.FC = () => {
                 <tr className="border-b border-gray-200 dark:border-gray-600">
                   <th className="text-left py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">Item</th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">Percentage</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">CGPA</th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700 dark:text-gray-300">Grade</th>
                 </tr>
               </thead>
@@ -210,7 +221,10 @@ const StudentDetailPage: React.FC = () => {
                 {gradeRows.map((row) => (
                   <tr key={row.label} className="border-b border-gray-100 dark:border-gray-700">
                     <td className="py-3 px-4 text-gray-900 dark:text-white">{row.label}</td>
-                    <td className="py-3 px-4 text-gray-900 dark:text-white">{row.value}</td>
+                    <td className="py-3 px-4 text-gray-900 dark:text-white">{row.value}%</td>
+                    <td className="py-3 px-4 text-gray-900 dark:text-white">
+                      {(row.label === '10th %' || row.label === 'PUC %') ? '-' : cgpaFromPercent(Number(row.value))}
+                    </td>
                     <td className="py-3 px-4">
                       <span className="px-2 py-1 rounded-md bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium">
                         {gradeFromPercent(Number(row.value))}

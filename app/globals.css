@@ -413,3 +413,31 @@ nav, footer {
   width: 100%;
   max-width: 100%;
 }
+
+/* Gradient border styles for cards */
+.gradient-border {
+  position: relative;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8, #1e40af);
+  padding: 2px;
+  border-radius: 12px;
+}
+
+.gradient-border-content {
+  background: white;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.dark .gradient-border-content {
+  background: #1f2937;
+}
+
+/* Display font for hero section animated text */
+.display-font {
+  font-family: 'Playfair Display', 'Merriweather', 'Georgia', 'Times New Roman', serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #3b82f6;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-style: italic;
+}

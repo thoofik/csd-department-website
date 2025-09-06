@@ -108,10 +108,8 @@ const FifthSemAnalyticsPage: React.FC = () => {
 
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             <StudentStatsCard title="Total Students" value={totalStudents} icon={Filter as any} color="text-blue-600" bgColor="bg-blue-100" />
-            <StudentStatsCard title="Average Aggregate" value={`${averageAggregate.toFixed(1)}%`} icon={Filter as any} color="text-green-600" bgColor="bg-green-100" />
-            <StudentStatsCard title="Average CGPA" value={`${Math.min(averageAggregate / 10, 10.0).toFixed(2)}`} icon={TrendingUp} color="text-indigo-600" bgColor="bg-indigo-100" />
             <StudentStatsCard
               title="Placement Eligible"
               value={placementEligibleCount}

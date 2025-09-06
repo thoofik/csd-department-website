@@ -504,7 +504,7 @@ const AnalyticsPage: React.FC = () => {
                 </p>
               </div>
               
-                                                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-6 lg:gap-8 max-w-[1400px] mx-auto">
+                                                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-[1400px] mx-auto">
                   <StudentStatsCard
                     title="Total Students"
                     value={displayAnalytics.totalStudents}
@@ -513,24 +513,6 @@ const AnalyticsPage: React.FC = () => {
                     bgColor="bg-blue-100 dark:bg-blue-900/30"
                     description={selectedBatch === 'all' ? "Across all batches" : `${selectedBatch.replace('-sem', ' Semester')} Students`}
                     delay={0.1}
-                  />
-                  <StudentStatsCard
-                    title="Average Aggregate"
-                    value={`${displayAnalytics.averageAggregate.toFixed(1)}%`}
-                    icon={TrendingUp}
-                    color="text-green-600 dark:text-green-400"
-                    bgColor="bg-green-100 dark:bg-green-900/30"
-                    description="Overall performance"
-                    delay={0.2}
-                  />
-                  <StudentStatsCard
-                    title="Average CGPA"
-                    value={`${Math.min(displayAnalytics.averageAggregate / 10, 10.0).toFixed(2)}`}
-                    icon={BookOpen}
-                    color="text-indigo-600 dark:text-indigo-400"
-                    bgColor="bg-indigo-100 dark:bg-indigo-900/30"
-                    description="Converted from percentage"
-                    delay={0.25}
                   />
                   <StudentStatsCard
                     title="Placement Eligible"

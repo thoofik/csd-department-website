@@ -30,7 +30,7 @@ import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import { FacultyMember, Achievement, Facility, Event, NewsItem, Course, StudentProject } from '../types';
 
-// Real data from PESITM official website
+// Real data from PESITM official website - Updated faculty order
 const facultyMembers: FacultyMember[] = [
      {
      id: "1",
@@ -78,7 +78,7 @@ const facultyMembers: FacultyMember[] = [
      ]
    },
      {
-     id: "5",
+     id: "3",
      name: "Mrs. Kavya S",
      position: "Assistant Professor",
      qualification: "B.E, M.Tech",
@@ -95,7 +95,7 @@ const facultyMembers: FacultyMember[] = [
      ]
    },
      {
-     id: "3",
+     id: "4",
      name: "Mr. Manjunatha G",
      position: "Assistant Professor",
      qualification: "DEC, B.E, M.Tech",
@@ -131,7 +131,7 @@ const facultyMembers: FacultyMember[] = [
      ]
    },
      {
-     id: "4",
+     id: "5",
      name: "Mr. Harish M",
      position: "Assistant Professor",
      qualification: "B.E, M.Tech",
@@ -148,6 +148,22 @@ const facultyMembers: FacultyMember[] = [
    },
      {
      id: "6",
+     name: "Mrs. Nithya H L",
+     position: "Assistant Professor",
+     qualification: "B.E, M.Tech",
+     specialization: ["Machine Learning", "Innovation", "Research Publications", "Machine Learning Detection"],
+     experience: "Not specified",
+     contact: "nithyahl1954@pestrust.edu.in",
+     phone: "9740418759",
+     image: "/nithya.jpg",
+     lab: "",
+     achievements: ["Machine Learning", "Innovation", "Research Publications", "Machine Learning Detection"],
+     publications: [
+       "Detection of fake online reviews using Machine Learning Technique - Published in the International Journal for research in Applied science and engineering technology, Volume-8, Issue-8, August 2020"
+     ]
+   },
+     {
+     id: "7",
      name: "Mr. Shivakumar S V",
      position: "Lab Instructor",
      qualification: "",

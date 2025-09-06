@@ -153,24 +153,32 @@ const Navigation: React.FC = () => {
             <ThemeToggle />
           </div>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            onClick={toggleMobileMenu}
-            className={`lg:hidden p-2 sm:p-3 rounded-xl backdrop-blur-sm border shadow-soft ${
-              isScrolled 
-                ? 'bg-white/20 border-white/30 text-white' 
-                : 'bg-white/20 border-white/30 text-white dark:bg-white/20 dark:border-white/30 dark:text-white'
-            }`}
-          >
-            {isMobileMenuOpen ? (
-              <X className="w-5 h-5 sm:w-6 sm:h-6" />
-            ) : (
-              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
-            )}
-          </motion.button>
+          {/* Mobile Header Controls */}
+          <div className="lg:hidden flex items-center space-x-2">
+            {/* Theme Toggle for Mobile - Smaller Size */}
+            <div className="scale-75 sm:scale-90">
+              <ThemeToggle />
+            </div>
+            
+            {/* Mobile Menu Button */}
+            <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              onClick={toggleMobileMenu}
+              className={`p-2 sm:p-3 rounded-xl backdrop-blur-sm border shadow-soft ${
+                isScrolled 
+                  ? 'bg-white/20 border-white/30 text-white' 
+                  : 'bg-white/20 border-white/30 text-white dark:bg-white/20 dark:border-white/30 dark:text-white'
+              }`}
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              ) : (
+                <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
+              )}
+            </motion.button>
+          </div>
         </div>
       </div>
 
@@ -226,13 +234,6 @@ const Navigation: React.FC = () => {
                   {item.external && <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />}
                 </a>
               ))}
-              
-              {/* Theme Toggle in Mobile Menu */}
-              <div className="pt-3 sm:pt-4 border-t border-white/20 dark:border-gray-700">
-                <div className="flex items-center justify-center">
-                  <ThemeToggle />
-                </div>
-              </div>
             </div>
           </motion.div>
         )}

@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import Navigation from '../../components/layout/Navigation';
+import NewNavigation from '../../components/layout/NewNavigation';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -334,7 +334,7 @@ const AnalyticsPage: React.FC = () => {
   if (loading) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20">
-        <Navigation />
+        <NewNavigation />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
@@ -347,18 +347,18 @@ const AnalyticsPage: React.FC = () => {
 
      return (
      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20">
-      <Navigation />
+      <NewNavigation />
 
-      <section className="pt-16 sm:pt-20 pb-6 sm:pb-8 lg:pb-12 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 text-white relative overflow-hidden">
+      <section className="pt-16 sm:pt-20 pb-6 sm:pb-8 lg:pb-12 bg-white dark:bg-gray-800 text-gray-900 dark:text-white relative overflow-hidden border-b border-gray-200 dark:border-gray-700">
         <div className="absolute inset-0 bg-pattern opacity-10 dark:opacity-20" />
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
           <div className="text-center">
-            <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 mb-3 sm:mb-4 lg:mb-6">
-              <Filter className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
-              <span className="text-xs sm:text-sm font-medium">Analytics Dashboard</span>
+            <div className="inline-flex items-center space-x-2 bg-blue-100 dark:bg-blue-900/30 backdrop-blur-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 mb-3 sm:mb-4 lg:mb-6">
+              <Filter className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-blue-600 dark:text-blue-400" />
+              <span className="text-xs sm:text-sm font-medium text-blue-700 dark:text-blue-300">Analytics Dashboard</span>
             </div>
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold mb-2 sm:mb-3 lg:mb-4 leading-tight">Student Analytics</h1>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-blue-100 max-w-3xl mx-auto px-1 sm:px-2 lg:px-0 leading-relaxed">Comprehensive insights into student performance and placement readiness</p>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-1 sm:px-2 lg:px-0 leading-relaxed">Comprehensive insights into student performance and placement readiness</p>
           </div>
         </div>
       </section>

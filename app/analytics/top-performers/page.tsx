@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import Link from 'next/link';
 import Button from '../../../components/ui/Button';
-import Navigation from '../../../components/layout/Navigation';
+import NewNavigation from '../../../components/layout/NewNavigation';
 
 interface Student {
   name: string;
@@ -159,18 +159,18 @@ export default function TopPerformersPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20">
-      <Navigation />
+      <NewNavigation />
       
       {/* Header Section */}
-      <header className="pt-16 sm:pt-20 pb-8 sm:pb-12 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 relative overflow-hidden">
+      <header className="pt-16 sm:pt-20 pb-8 sm:pb-12 bg-white dark:bg-gray-800 text-gray-900 dark:text-white relative overflow-hidden border-b border-gray-200 dark:border-gray-700">
         <div className="absolute inset-0 bg-pattern opacity-10 dark:opacity-20" />
         
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
               🏆 Top Performers
             </h1>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-blue-100 dark:text-blue-200 max-w-3xl mx-auto px-2 sm:px-0">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-2 sm:px-0">
               Celebrating academic excellence and outstanding performance across all semesters
             </p>
           </div>

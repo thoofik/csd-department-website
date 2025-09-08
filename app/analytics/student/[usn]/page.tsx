@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
-import Navigation from '../../../../components/layout/Navigation';
+import NewNavigation from '../../../../components/layout/NewNavigation';
 import { ArrowLeft, Award, CheckCircle, Target, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Student } from '../../../../types';
@@ -61,7 +61,7 @@ const StudentDetailPage: React.FC = () => {
   if (isLoading) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20">
-        <Navigation />
+        <NewNavigation />
         <div className="max-w-4xl mx-auto px-4 py-24">
           <Link href="/analytics" className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline">
             <ArrowLeft className="w-4 h-4 mr-1" /> Back to Analytics
@@ -80,7 +80,7 @@ const StudentDetailPage: React.FC = () => {
   if (!student) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <Navigation />
+        <NewNavigation />
         <div className="max-w-4xl mx-auto px-4 py-24">
           <Link href="/analytics" className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline">
             <ArrowLeft className="w-4 h-4 mr-1" /> Back to Analytics
@@ -116,7 +116,7 @@ const StudentDetailPage: React.FC = () => {
 
   return (
           <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20">
-        <Navigation />
+        <NewNavigation />
         <div className="max-w-6xl mx-auto px-4 py-24">
         <div className="flex items-center justify-between mb-6">
           <Link href="/analytics" className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline">

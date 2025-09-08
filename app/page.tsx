@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import Navigation from '../components/layout/Navigation';
+import NewNavigation from '../components/layout/NewNavigation';
 import HeroSection from '../components/sections/HeroSection';
 import { 
   GraduationCap, 
@@ -441,9 +441,8 @@ const AboutSection: React.FC = () => {
 };
 
 // Enhanced Faculty Section with Detailed Modal
-const FacultySection: React.FC = () => {
+const FacultySection: React.FC<{ isModalOpen: boolean; setIsModalOpen: (open: boolean) => void }> = ({ isModalOpen, setIsModalOpen }) => {
   const [selectedFaculty, setSelectedFaculty] = useState<FacultyMember | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     console.log('Modal state changed:', { isModalOpen, selectedFaculty: selectedFaculty?.name });
@@ -463,13 +462,13 @@ const FacultySection: React.FC = () => {
     document.body.style.position = 'unset';
     document.body.style.width = 'unset';
     
-    // Ensure we stay in faculty section after closing modal
+    // Scroll back to faculty section after closing modal
     setTimeout(() => {
       const facultySection = document.getElementById('faculty');
       if (facultySection) {
         facultySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }, 50);
+    }, 100);
   };
 
   // Prevent body scrolling when modal is open
@@ -482,15 +481,13 @@ const FacultySection: React.FC = () => {
       document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
     } else {
-      // Restore scroll position
+      // Restore scroll position without forcing scroll
       const scrollY = document.body.style.top;
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
       document.body.style.overflow = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
+      // Don't force scroll to top - let the page stay where it is
     }
 
     // Cleanup function
@@ -1113,12 +1110,16 @@ const Footer: React.FC = () => {
 
 // Main App Component
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <main className="min-h-screen w-full overflow-x-hidden">
-      <Navigation />
+      <div className={isModalOpen ? 'hidden' : 'block'}>
+        <NewNavigation />
+      </div>
       <HeroSection />
       <AboutSection />
-      <FacultySection />
+      <FacultySection isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       <AchievementsSection />
       <Footer />
     </main>

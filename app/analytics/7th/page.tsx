@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useEffect, useState } from 'react';
-import Navigation from '../../../components/layout/Navigation';
+import NewNavigation from '../../../components/layout/NewNavigation';
 import { Filter, TrendingUp, Users, Target, Download } from 'lucide-react';
 import StudentStatsCard from '../../../components/analytics/StudentStatsCard';
 import PerformanceChart from '../../../components/analytics/PerformanceChart';
@@ -97,7 +97,7 @@ const SeventhSemAnalyticsPage: React.FC = () => {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20">
-      <Navigation />
+      <NewNavigation />
 
       <section className="pt-20 pb-12 bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900/20 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-pattern opacity-10 dark:opacity-20" />

@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import FloatingDockDemo from "@/components/floating-dock-demo";
 import { VerticalFloatingDock } from "@/components/ui/vertical-floating-dock";

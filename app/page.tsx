@@ -441,8 +441,12 @@ const AboutSection: React.FC = () => {
 };
 
 // Enhanced Faculty Section with Detailed Modal
-const FacultySection: React.FC<{ isModalOpen: boolean; setIsModalOpen: (open: boolean) => void }> = ({ isModalOpen, setIsModalOpen }) => {
-  const [selectedFaculty, setSelectedFaculty] = useState<FacultyMember | null>(null);
+const FacultySection: React.FC<{ 
+  isModalOpen: boolean; 
+  setIsModalOpen: (open: boolean) => void;
+  selectedFaculty: FacultyMember | null;
+  setSelectedFaculty: (faculty: FacultyMember | null) => void;
+}> = ({ isModalOpen, setIsModalOpen, selectedFaculty, setSelectedFaculty }) => {
 
   useEffect(() => {
     console.log('Modal state changed:', { isModalOpen, selectedFaculty: selectedFaculty?.name });
@@ -454,67 +458,7 @@ const FacultySection: React.FC<{ isModalOpen: boolean; setIsModalOpen: (open: bo
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedFaculty(null);
-    // Re-enable body scrolling
-    document.body.style.overflow = 'unset';
-    document.body.style.position = 'unset';
-    document.body.style.width = 'unset';
-    
-    // Scroll back to faculty section after closing modal
-    setTimeout(() => {
-      const facultySection = document.getElementById('faculty');
-      if (facultySection) {
-        facultySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
-  };
 
-  // Prevent body scrolling when modal is open
-  useEffect(() => {
-    if (isModalOpen) {
-      // Store current scroll position
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
-      document.body.style.overflow = 'hidden';
-    } else {
-      // Restore scroll position without forcing scroll
-      const scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.overflow = '';
-      // Don't force scroll to top - let the page stay where it is
-    }
-
-    // Cleanup function
-    return () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.overflow = '';
-    };
-  }, [isModalOpen]);
-
-  // Handle escape key to close modal
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isModalOpen) {
-        closeModal();
-      }
-    };
-
-    if (isModalOpen) {
-      document.addEventListener('keydown', handleEscape);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [isModalOpen]);
 
   return (
          <section id="faculty" className="py-16 sm:py-20 lg:py-16 mt-4 bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 relative overflow-hidden">
@@ -593,130 +537,6 @@ const FacultySection: React.FC<{ isModalOpen: boolean; setIsModalOpen: (open: bo
           ))}
         </div>
 
-        {/* Faculty Detail Modal */}
-        {isModalOpen && selectedFaculty && (
-          <div 
-            className="fixed inset-0 bg-black/80 backdrop-blur-md z-[99999] flex items-center justify-center p-4 sm:p-6"
-            onClick={closeModal}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl max-w-5xl w-full max-h-[90vh] relative shadow-2xl z-[100000]"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Header with Close Button */}
-              <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-gray-100 pr-4">{selectedFaculty.name}</h2>
-                  <button
-                    onClick={closeModal}
-                    className="w-10 h-10 sm:w-8 sm:h-8 bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-800/50 rounded-full flex items-center justify-center transition-colors flex-shrink-0 border-2 border-red-200 dark:border-red-700"
-                  >
-                    <span className="text-red-600 dark:text-red-400 text-lg sm:text-base font-bold">×</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[calc(90vh-120px)]">
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-                  {/* Faculty Image and Basic Info */}
-                  <div className="lg:col-span-1">
-                    <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 mx-auto rounded-2xl overflow-hidden mb-4 sm:mb-6">
-                      <img
-                        src={selectedFaculty.image}
-                        alt={selectedFaculty.name}
-                        className="w-full h-full object-cover object-top"
-                      />
-                    </div>
-                    
-                    <div className="space-y-3 sm:space-y-4">
-                      <div>
-                        <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-1 sm:mb-2 text-sm sm:text-base">Position</h4>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{selectedFaculty.position}</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-1 sm:mb-2 text-sm sm:text-base">Qualification</h4>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{selectedFaculty.qualification}</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-1 sm:mb-2 text-sm sm:text-base">Experience</h4>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{selectedFaculty.experience}</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-1 sm:mb-2 text-sm sm:text-base">Contact</h4>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{selectedFaculty.contact}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                                     {/* Detailed Information */}
-                   <div className="lg:col-span-2 space-y-4 sm:space-y-6">
-                     {/* Achievements */}
-                    <div>
-                      <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2 sm:mb-3 text-sm sm:text-base">Achievements</h4>
-                      <ul className="space-y-1 sm:space-y-2">
-                        {selectedFaculty.achievements.map((achievement: string, idx: number) => (
-                          <li key={idx} className="text-gray-600 dark:text-gray-300 flex items-start text-sm sm:text-base">
-                            <span className="text-blue-500 dark:text-blue-400 mr-2 flex-shrink-0">•</span>
-                            {achievement}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Publications */}
-                    <div>
-                      <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2 sm:mb-3 text-sm sm:text-base">Publications</h4>
-                      <div className="space-y-2 sm:space-y-3">
-                        {selectedFaculty.publications.map((pub: string, idx: number) => (
-                          <div key={idx} className="bg-gray-50 dark:bg-gray-700 p-2 sm:p-3 rounded-lg">
-                            <p className="text-gray-700 dark:text-gray-200 text-xs sm:text-sm">{pub}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Patents */}
-                    {selectedFaculty.patents && selectedFaculty.patents.length > 0 && (
-                      <div>
-                        <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2 sm:mb-3 text-sm sm:text-base">Patents</h4>
-                        <div className="space-y-2 sm:space-y-3">
-                          {selectedFaculty.patents.map((patent: string, idx: number) => (
-                            <div key={idx} className="bg-blue-50 dark:bg-blue-900/20 p-2 sm:p-3 rounded-lg border-l-4 border-blue-500 dark:border-blue-400">
-                              <p className="text-gray-700 dark:text-gray-200 text-xs sm:text-sm">{patent}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Professional Memberships */}
-                    {selectedFaculty.professionalMemberships && selectedFaculty.professionalMemberships.length > 0 && (
-                      <div>
-                        <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2 sm:mb-3 text-sm sm:text-base">Professional Memberships</h4>
-                        <ul className="space-y-1 sm:space-y-2">
-                          {selectedFaculty.professionalMemberships.map((membership: string, idx: number) => (
-                            <li key={idx} className="text-gray-600 dark:text-gray-300 flex items-start text-sm sm:text-base">
-                              <span className="text-blue-500 dark:text-blue-400 mr-2 flex-shrink-0">•</span>
-                              {membership}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
       </div>
     </section>
   );
@@ -1111,6 +931,43 @@ const Footer: React.FC = () => {
 // Main App Component
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFaculty, setSelectedFaculty] = useState<FacultyMember | null>(null);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedFaculty(null);
+    // Page will stay exactly where it is - no scrolling
+  };
+
+  // Prevent body scrolling when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isModalOpen]);
+
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        closeModal();
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isModalOpen]);
 
   return (
     <main className="min-h-screen w-full overflow-x-hidden">
@@ -1119,9 +976,138 @@ export default function Home() {
       </div>
       <HeroSection />
       <AboutSection />
-      <FacultySection isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <FacultySection 
+        isModalOpen={isModalOpen} 
+        setIsModalOpen={setIsModalOpen}
+        selectedFaculty={selectedFaculty}
+        setSelectedFaculty={setSelectedFaculty}
+      />
       <AchievementsSection />
       <Footer />
+
+      {/* Faculty Detail Modal - Moved to root level */}
+      {isModalOpen && selectedFaculty && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4 sm:p-6"
+          onClick={closeModal}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="bg-white dark:bg-gray-800 rounded-2xl max-w-5xl w-full max-h-[90vh] relative shadow-2xl z-[100001] border border-gray-200 dark:border-gray-700"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header with Close Button */}
+            <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-gray-100 pr-4">{selectedFaculty.name}</h2>
+                <button
+                  onClick={closeModal}
+                  className="w-10 h-10 sm:w-8 sm:h-8 bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-800/50 rounded-full flex items-center justify-center transition-colors flex-shrink-0 border-2 border-red-200 dark:border-red-700"
+                >
+                  <span className="text-red-600 dark:text-red-400 text-lg sm:text-base font-bold">×</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[calc(90vh-120px)]">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+                {/* Faculty Image and Basic Info */}
+                <div className="lg:col-span-1">
+                  <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 mx-auto rounded-2xl overflow-hidden mb-4 sm:mb-6">
+                    <img
+                      src={selectedFaculty.image}
+                      alt={selectedFaculty.name}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                  
+                  <div className="space-y-3 sm:space-y-4">
+                    <div>
+                      <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-1 sm:mb-2 text-sm sm:text-base">Position</h4>
+                      <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{selectedFaculty.position}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-1 sm:mb-2 text-sm sm:text-base">Qualification</h4>
+                      <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{selectedFaculty.qualification}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-1 sm:mb-2 text-sm sm:text-base">Experience</h4>
+                      <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{selectedFaculty.experience}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-1 sm:mb-2 text-sm sm:text-base">Contact</h4>
+                      <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base break-all">{selectedFaculty.contact}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Detailed Information */}
+                <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+                  {/* Achievements */}
+                  <div>
+                    <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2 sm:mb-3 text-sm sm:text-base">Achievements</h4>
+                    <ul className="space-y-1 sm:space-y-2">
+                      {selectedFaculty.achievements.map((achievement: string, idx: number) => (
+                        <li key={idx} className="text-gray-600 dark:text-gray-300 flex items-start text-sm sm:text-base">
+                          <span className="text-blue-500 dark:text-blue-400 mr-2 flex-shrink-0">•</span>
+                          {achievement}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Publications */}
+                  <div>
+                    <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2 sm:mb-3 text-sm sm:text-base">Publications</h4>
+                    <div className="space-y-2 sm:space-y-3">
+                      {selectedFaculty.publications.map((pub: string, idx: number) => (
+                        <div key={idx} className="bg-gray-50 dark:bg-gray-700 p-2 sm:p-3 rounded-lg">
+                          <p className="text-gray-700 dark:text-gray-200 text-xs sm:text-sm">{pub}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Patents */}
+                  {selectedFaculty.patents && selectedFaculty.patents.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2 sm:mb-3 text-sm sm:text-base">Patents</h4>
+                      <div className="space-y-2 sm:space-y-3">
+                        {selectedFaculty.patents.map((patent: string, idx: number) => (
+                          <div key={idx} className="bg-blue-50 dark:bg-blue-900/20 p-2 sm:p-3 rounded-lg border-l-4 border-blue-500 dark:border-blue-400">
+                            <p className="text-gray-700 dark:text-gray-200 text-xs sm:text-sm">{patent}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Professional Memberships */}
+                  {selectedFaculty.professionalMemberships && selectedFaculty.professionalMemberships.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2 sm:mb-3 text-sm sm:text-base">Professional Memberships</h4>
+                      <ul className="space-y-1 sm:space-y-2">
+                        {selectedFaculty.professionalMemberships.map((membership: string, idx: number) => (
+                          <li key={idx} className="text-gray-600 dark:text-gray-300 flex items-start text-sm sm:text-base">
+                            <span className="text-blue-500 dark:text-blue-400 mr-2 flex-shrink-0">•</span>
+                            {membership}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </main>
   );
 }

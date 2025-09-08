@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { HoveredLink, Menu, MenuItem, ProductItem } from '@/components/ui/navbar-menu';
+import { VerticalFloatingDock } from '@/components/ui/vertical-floating-dock';
 import { cn } from '@/lib/utils';
 import { useTheme } from '../../contexts/ThemeContext';
 import ThemeToggle from '../ui/ThemeToggle';
@@ -17,6 +18,30 @@ const NewNavigation: React.FC = () => {
   const handleNavbarClick = () => {
     setActive(null);
   };
+
+  // Navigation items for the vertical floating dock
+  const navigationItems = [
+    {
+      title: "About",
+      icon: <Users className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+      href: "/#hero",
+    },
+    {
+      title: "Academics",
+      icon: <GraduationCap className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+      href: "/analytics",
+    },
+    {
+      title: "Resume Analyzer",
+      icon: <FileText className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+      href: "https://screenify-ai.vercel.app/",
+    },
+    {
+      title: "Interview Prep",
+      icon: <Briefcase className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+      href: "https://interview-prep-green.vercel.app/",
+    },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -159,7 +184,7 @@ const NewNavigation: React.FC = () => {
                 </p>
               </div>
             </motion.a>
-
+            
             {/* Mobile Controls - Top Right */}
             <div className="flex items-center space-x-2">
               <ThemeToggle />
@@ -177,76 +202,20 @@ const NewNavigation: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Vertical sidebar when scrolling - Desktop only */}
-      <div className={cn(
-        "hidden md:block fixed left-4 top-1/2 transform -translate-y-1/2 z-50 transition-all duration-700",
-        isScrolled ? "opacity-100" : "opacity-0 pointer-events-none"
-      )}>
+      {/* Vertical Floating Dock when scrolling - Desktop only */}
+      {isScrolled && (
         <motion.div
           initial={{ x: -100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -100, opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex flex-col space-y-3"
         >
-            {/* Vertical navigation buttons */}
-            <a 
-              href="/#hero" 
-              onClick={handleNavbarClick}
-              className="relative group flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 hover:scale-110 active:scale-90"
-            >
-              <Users className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              {/* Hover tooltip */}
-              <div className="absolute left-14 bg-gray-800 text-white text-xs px-3 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
-                About
-              </div>
-            </a>
-            
-            <a 
-              href="/analytics" 
-              onClick={handleNavbarClick}
-              className="relative group flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 hover:scale-110 active:scale-90"
-            >
-              <GraduationCap className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              {/* Hover tooltip */}
-              <div className="absolute left-14 bg-gray-800 text-white text-xs px-3 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
-                Academics
-              </div>
-            </a>
-            
-            <a 
-              href="https://screenify-ai.vercel.app/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              onClick={handleNavbarClick}
-              className="relative group flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 hover:scale-110 active:scale-90"
-            >
-              <FileText className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              {/* Hover tooltip */}
-              <div className="absolute left-14 bg-gray-800 text-white text-xs px-3 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
-                Resume Analyzer
-              </div>
-            </a>
-            
-            <a 
-              href="https://interview-prep-green.vercel.app/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              onClick={handleNavbarClick}
-              className="relative group flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 hover:scale-110 active:scale-90"
-            >
-              <Briefcase className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              {/* Hover tooltip */}
-              <div className="absolute left-14 bg-gray-800 text-white text-xs px-3 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
-                Interview Prep
-              </div>
-            </a>
-
-            {/* Theme toggle at bottom */}
-            <div className="pt-2">
-              <ThemeToggle />
-            </div>
+          <VerticalFloatingDock 
+            items={navigationItems} 
+            className="transition-all duration-700"
+          />
         </motion.div>
-      </div>
+      )}
 
       {/* Mobile Menu Dropdown */}
       <div 

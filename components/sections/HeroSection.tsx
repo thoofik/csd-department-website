@@ -32,7 +32,7 @@ const HeroSection: React.FC = () => {
   }, [animatedTexts.length]);
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20">
+    <section id="hero" className="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-pattern opacity-10 dark:opacity-20" />
       

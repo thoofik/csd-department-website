@@ -65,7 +65,7 @@ const NewNavigation: React.FC = () => {
             {/* Desktop Navigation Menu */}
             <div className="flex items-center space-x-8">
               <a 
-                href="/#about" 
+                href="/#hero" 
                 onClick={handleNavbarClick}
                 className="flex items-center space-x-3 group hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full px-4 py-2 transition-all duration-300 hover:scale-110 active:scale-90"
               >
@@ -190,7 +190,7 @@ const NewNavigation: React.FC = () => {
         >
             {/* Vertical navigation buttons */}
             <a 
-              href="/#about" 
+              href="/#hero" 
               onClick={handleNavbarClick}
               className="relative group flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 hover:scale-110 active:scale-90"
             >
@@ -262,7 +262,7 @@ const NewNavigation: React.FC = () => {
         >
           <div className="flex flex-col space-y-3">
             <a 
-              href="/#about" 
+              href="/#hero" 
               onClick={handleNavbarClick}
               className="flex items-center space-x-3 group hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-3 py-2 transition-colors duration-200"
             >

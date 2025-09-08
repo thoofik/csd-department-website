@@ -544,7 +544,7 @@ const FacultySection: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {facultyMembers.map((faculty, index) => (
             <motion.div
               key={faculty.id}
@@ -555,14 +555,14 @@ const FacultySection: React.FC = () => {
               className="group"
             >
                              <Card 
-                 className={`p-3 sm:p-4 h-auto relative z-10 transition-transform duration-300 group-hover:scale-105 ${faculty.name === "Mr. Shivakumar S V" || faculty.name === "Mrs. Nethravathi K.M" ? "cursor-default" : "cursor-pointer"}`}
+                 className={`p-2 sm:p-3 md:p-4 h-auto relative z-10 transition-transform duration-300 group-hover:scale-105 ${faculty.name === "Mr. Shivakumar S V" || faculty.name === "Mrs. Nethravathi K.M" ? "cursor-default" : "cursor-pointer"}`}
                  onClick={faculty.name === "Mr. Shivakumar S V" || faculty.name === "Mrs. Nethravathi K.M" ? undefined : () => openModal(faculty)}
                >
                  {/* Blurred background effect */}
                  <div className="absolute inset-0 bg-white/80 dark:bg-transparent backdrop-blur-sm rounded-xl opacity-0 group-hover:opacity-100 dark:group-hover:opacity-0 transition-all duration-300 -z-10" />
                  <div className="text-center">
-                   <div className="relative mb-3 sm:mb-4">
-                     <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 mx-auto rounded-xl overflow-hidden">
+                   <div className="relative mb-2 sm:mb-3 md:mb-4">
+                     <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 mx-auto rounded-xl overflow-hidden">
                       <img
                         src={faculty.image}
                         alt={faculty.name}
@@ -572,7 +572,7 @@ const FacultySection: React.FC = () => {
                     
                   </div>
                   
-                                                         <h3 className="text-base sm:text-lg font-bold mb-1 text-gray-800 dark:text-gray-100">{faculty.name}</h3>
+                                                         <h3 className="text-sm sm:text-base md:text-lg font-bold mb-1 text-gray-800 dark:text-gray-100">{faculty.name}</h3>
                     <p className="text-gray-600 dark:text-gray-300 mb-1 font-medium text-xs sm:text-sm">{faculty.position}</p>
                     {faculty.qualification && (
                       <p className="text-xs sm:text-sm text-blue-600 dark:text-blue-400 mb-1 font-medium">{faculty.qualification}</p>

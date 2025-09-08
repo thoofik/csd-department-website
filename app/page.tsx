@@ -174,6 +174,19 @@ const facultyMembers: FacultyMember[] = [
      image: "/mr-shivakumar-sv.jpg",
      achievements: [],
      publications: []
+   },
+     {
+     id: "8",
+     name: "Mrs. Nethravathi K.M",
+     position: "Office Assistant",
+     qualification: "",
+     specialization: [],
+     experience: "",
+     contact: "",
+     phone: "",
+     image: "/WhatsApp Image 2025-09-08 at 13.38.52_8589b97a.jpg",
+     achievements: [],
+     publications: []
    }
 ];
 
@@ -542,8 +555,8 @@ const FacultySection: React.FC = () => {
               className="group"
             >
                              <Card 
-                 className={`p-3 sm:p-4 h-auto relative z-10 transition-transform duration-300 group-hover:scale-105 ${faculty.name === "Mr. Shivakumar S V" ? "cursor-default" : "cursor-pointer"}`}
-                 onClick={faculty.name === "Mr. Shivakumar S V" ? undefined : () => openModal(faculty)}
+                 className={`p-3 sm:p-4 h-auto relative z-10 transition-transform duration-300 group-hover:scale-105 ${faculty.name === "Mr. Shivakumar S V" || faculty.name === "Mrs. Nethravathi K.M" ? "cursor-default" : "cursor-pointer"}`}
+                 onClick={faculty.name === "Mr. Shivakumar S V" || faculty.name === "Mrs. Nethravathi K.M" ? undefined : () => openModal(faculty)}
                >
                  {/* Blurred background effect */}
                  <div className="absolute inset-0 bg-white/80 dark:bg-transparent backdrop-blur-sm rounded-xl opacity-0 group-hover:opacity-100 dark:group-hover:opacity-0 transition-all duration-300 -z-10" />

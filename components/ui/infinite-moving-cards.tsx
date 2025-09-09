@@ -84,7 +84,13 @@ export const InfiniteMovingCards = ({
     lastTouchX.current = e.clientX;
     startX.current = e.clientX;
     
+    // Reset velocity for new drag
+    velocity.current = 0;
+    lastMoveTime.current = 0;
+    
     if (scrollerRef.current) {
+      // Disable transitions during drag for immediate response
+      scrollerRef.current.style.transition = 'none';
       const computedStyle = window.getComputedStyle(scrollerRef.current);
       const matrix = computedStyle.transform;
       if (matrix !== 'none') {
@@ -167,11 +173,12 @@ export const InfiniteMovingCards = ({
     }
     
     if (scrollerRef.current) {
-      const dampingFactor = 0.6;
+      const dampingFactor = 1.2; // Match touch sensitivity
       const adjustedDeltaX = deltaX * dampingFactor;
       const newTranslate = currentTranslate.current + adjustedDeltaX;
       currentTranslate.current = newTranslate;
       positionRef.current = newTranslate;
+      scrollerRef.current.style.transition = 'none';
       scrollerRef.current.style.transform = `translate3d(${newTranslate}px,0,0)`;
     }
     
@@ -191,6 +198,25 @@ export const InfiniteMovingCards = ({
     isDragging.current = false;
     setIsDraggingState(false);
     
+    // Add momentum scrolling based on velocity
+    if (scrollerRef.current && Math.abs(velocity.current) > 0.1) {
+      const momentum = velocity.current * 200; // Adjust momentum multiplier
+      const finalPosition = currentTranslate.current + momentum;
+      currentTranslate.current = finalPosition;
+      positionRef.current = finalPosition;
+      
+      // Smooth momentum animation
+      scrollerRef.current.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      scrollerRef.current.style.transform = `translate3d(${finalPosition}px,0,0)`;
+      
+      // Reset transition after animation
+      setTimeout(() => {
+        if (scrollerRef.current) {
+          scrollerRef.current.style.transition = 'none';
+        }
+      }, 500);
+    }
+    
     // Keep position, pause briefly, then resume JS auto-scroll without snapping
     setIsPausedByUser(true);
     if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
@@ -198,7 +224,7 @@ export const InfiniteMovingCards = ({
       setIsPausedByUser(false);
       isManualMode.current = false;
       setIsManualModeState(false);
-    }, 4000);
+    }, 2000); // Reduced pause time for better UX
   }, [enableTouchControls]);
 
   // Add mouse event listeners
@@ -230,8 +256,6 @@ export const InfiniteMovingCards = ({
       (document.body.style as any).mozUserSelect = 'none';
       (document.body.style as any).msUserSelect = 'none';
       
-      console.log('Touch start triggered!', { enableTouchControls, touches: e.touches.length });
-      
       isDragging.current = true;
       isManualMode.current = true;
       setIsManualModeState(true);
@@ -240,18 +264,20 @@ export const InfiniteMovingCards = ({
       lastTouchX.current = e.touches[0].clientX;
       startX.current = e.touches[0].clientX;
       
+      // Reset velocity for new touch
+      velocity.current = 0;
+      lastMoveTime.current = 0;
+      
       if (scrollerRef.current) {
-        // Set up smooth transitions for manual control
-        scrollerRef.current.style.transition = 'transform 0.1s ease-out';
+        // Disable transitions during touch for immediate response
+        scrollerRef.current.style.transition = 'none';
         const computedStyle = window.getComputedStyle(scrollerRef.current);
         const matrix = computedStyle.transform;
         if (matrix !== 'none') {
           const values = matrix.split('(')[1].split(')')[0].split(',');
           currentTranslate.current = parseFloat(values[4]) || 0;
         }
-        console.log('Touch start - scroller ref found, current translate:', currentTranslate.current);
-      } else {
-        console.log('Touch start - scroller ref not found!');
+        positionRef.current = currentTranslate.current;
       }
     };
 
@@ -270,22 +296,20 @@ export const InfiniteMovingCards = ({
       }
       
       if (scrollerRef.current) {
-        // Apply a damping factor to make movement smoother and slower
-        const dampingFactor = 0.6; // Reduce sensitivity for smoother movement
+        // Improved damping factor for better mobile responsiveness
+        const dampingFactor = 1.2; // Increased sensitivity for easier swiping
         const adjustedDeltaX = deltaX * dampingFactor;
         const newTranslate = currentTranslate.current + adjustedDeltaX;
-        currentTranslate.current = newTranslate; // Update the ref
+        currentTranslate.current = newTranslate;
+        positionRef.current = newTranslate;
         
-        // Apply smooth transform with easing
-        scrollerRef.current.style.transform = `translateX(${newTranslate}px)`;
+        // Apply smooth transform without transition during drag for immediate response
+        scrollerRef.current.style.transition = 'none';
+        scrollerRef.current.style.transform = `translate3d(${newTranslate}px,0,0)`;
         scrollerRef.current.style.animationPlayState = 'paused';
-        scrollerRef.current.style.transition = 'transform 0.1s ease-out'; // Add smooth transition
         
         // Force a re-render by updating the manual position state
         setManualPosition(newTranslate);
-        
-        // Debug logging
-        console.log('Touch move:', { deltaX, adjustedDeltaX, newTranslate, currentX, lastTouchX: lastTouchX.current });
       }
       
       lastTouchX.current = currentX;
@@ -304,6 +328,25 @@ export const InfiniteMovingCards = ({
       isDragging.current = false;
       setIsDraggingState(false);
       
+      // Add momentum scrolling based on velocity
+      if (scrollerRef.current && Math.abs(velocity.current) > 0.1) {
+        const momentum = velocity.current * 200; // Adjust momentum multiplier
+        const finalPosition = currentTranslate.current + momentum;
+        currentTranslate.current = finalPosition;
+        positionRef.current = finalPosition;
+        
+        // Smooth momentum animation
+        scrollerRef.current.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        scrollerRef.current.style.transform = `translate3d(${finalPosition}px,0,0)`;
+        
+        // Reset transition after animation
+        setTimeout(() => {
+          if (scrollerRef.current) {
+            scrollerRef.current.style.transition = 'none';
+          }
+        }, 500);
+      }
+      
       // Pause briefly, then resume JS auto-scroll from the current position
       setIsPausedByUser(true);
       if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
@@ -311,7 +354,7 @@ export const InfiniteMovingCards = ({
         setIsPausedByUser(false);
         isManualMode.current = false;
         setIsManualModeState(false);
-      }, 4000);
+      }, 2000); // Reduced pause time for better UX
     };
 
     // Add non-passive touch event listeners
@@ -379,7 +422,6 @@ export const InfiniteMovingCards = ({
             className="relative w-[280px] sm:w-[320px] md:w-[380px] max-w-full shrink-0 group select-none"
             key={`${item.name}-${idx}`}
             onClick={(e) => e.stopPropagation()}
-            style={{ userSelect: 'none', WebkitUserSelect: 'none' } as React.CSSProperties & { MozUserSelect?: string; msUserSelect?: string }}
           >
             <div className="gradient-border">
               <div className="gradient-border-content p-3 sm:p-4 md:p-6 lg:p-8 h-[280px] sm:h-[320px] md:h-[400px]">

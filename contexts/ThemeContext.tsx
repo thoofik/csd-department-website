@@ -15,11 +15,10 @@ export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
     // Return a default theme instead of throwing an error
-    console.warn('useTheme must be used within a ThemeProvider, using default light theme');
     return {
       theme: 'light' as Theme,
       toggleTheme: () => {
-        console.warn('Theme toggle not available outside ThemeProvider');
+        // Silent fallback to prevent console warnings during SSR
       }
     };
   }
@@ -45,7 +44,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
     } catch (error) {
       // Fallback to light theme if there's an error
-      console.warn('Error loading theme preference, using light theme:', error);
       setTheme('light');
     }
   }, []);
@@ -58,7 +56,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         root.classList.add(theme);
         localStorage.setItem('theme', theme);
       } catch (error) {
-        console.warn('Error applying theme:', error);
+        // Silent error handling
       }
     }
   }, [theme, mounted]);
@@ -67,14 +65,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
 
-  // Prevent hydration mismatch
-  if (!mounted) {
-    return <div className="light">{children}</div>;
-  }
-
+  // Always render the provider with consistent theme
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
+      <div suppressHydrationWarning>
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 };

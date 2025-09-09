@@ -10,9 +10,8 @@ export const metadata: Metadata = {
   description: 'Official website of the Computer Science and Design Department at PES Institute of Technology and Management',
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/light-logo-icon-16x16.png', type: 'image/png', sizes: '16x16' },
-      { url: '/light-logo-icon-32x32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
+      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
       { url: '/light-logo-icon-48x48.png', type: 'image/png', sizes: '48x48' },
       { url: '/light-logo-icon-96x96.png', type: 'image/png', sizes: '96x96' },
       { url: '/light-logo-icon-192x192.png', type: 'image/png', sizes: '192x192' },
@@ -30,16 +29,18 @@ export const metadata: Metadata = {
     ],
   },
   manifest: '/manifest.json',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#000000' },
-  ],
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
     title: 'PESITM CSD',
   },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: '#ffffff',
 };
 
 export default function RootLayout({
@@ -58,10 +59,14 @@ export default function RootLayout({
                   var theme = localStorage.getItem('theme');
                   if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                     document.documentElement.classList.add('dark');
+                    document.documentElement.classList.remove('light');
                   } else {
                     document.documentElement.classList.add('light');
+                    document.documentElement.classList.remove('dark');
                   }
-                } catch (e) {}
+                } catch (e) {
+                  document.documentElement.classList.add('light');
+                }
               })();
             `,
           }}

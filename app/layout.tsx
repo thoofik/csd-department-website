@@ -10,20 +10,19 @@ export const metadata: Metadata = {
   description: 'Official website of the Computer Science and Design Department at PES Institute of Technology and Management',
   icons: {
     icon: [
-      { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
-      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
-      { url: '/light-logo-icon-48x48.png', type: 'image/png', sizes: '48x48' },
-      { url: '/light-logo-icon-96x96.png', type: 'image/png', sizes: '96x96' },
-      { url: '/app-icon-192x192.png', type: 'image/png', sizes: '192x192' },
-      { url: '/app-icon-512x512.png', type: 'image/png', sizes: '512x512' },
+      { url: '/favicon.ico?v=4', sizes: 'any' },
+      { url: '/favicon-16x16.png?v=4', type: 'image/png', sizes: '16x16' },
+      { url: '/favicon-32x32.png?v=4', type: 'image/png', sizes: '32x32' },
+      { url: '/app-icon-192x192.png?v=4', type: 'image/png', sizes: '192x192' },
+      { url: '/app-icon-512x512.png?v=4', type: 'image/png', sizes: '512x512' },
     ],
     apple: [
-      { url: '/app-icon-180x180.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-touch-icon.png?v=4', sizes: '180x180', type: 'image/png' },
     ],
     other: [
       {
         rel: 'apple-touch-icon-precomposed',
-        url: '/app-icon-180x180.png',
+        url: '/apple-touch-icon-precomposed.png?v=4',
         sizes: '180x180',
       },
     ],

@@ -333,7 +333,7 @@ const AnalyticsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20">
+      <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 pt-20 md:pt-0">
         <NewNavigation />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
@@ -346,7 +346,7 @@ const AnalyticsPage: React.FC = () => {
   }
 
      return (
-     <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20">
+     <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 pt-20 md:pt-0">
       <NewNavigation />
 
       <section className="pt-16 sm:pt-20 pb-6 sm:pb-8 lg:pb-12 bg-white dark:bg-gray-800 text-gray-900 dark:text-white relative overflow-hidden border-b border-gray-200 dark:border-gray-700">
@@ -357,7 +357,7 @@ const AnalyticsPage: React.FC = () => {
               <Filter className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-blue-600 dark:text-blue-400" />
               <span className="text-xs sm:text-sm font-medium text-blue-700 dark:text-blue-300">Analytics Dashboard</span>
             </div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold mb-2 sm:mb-3 lg:mb-4 leading-tight">Student Analytics</h1>
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold mb-2 sm:mb-3 lg:mb-4 leading-tight display-font">Student Analytics</h1>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-1 sm:px-2 lg:px-0 leading-relaxed">Comprehensive insights into student performance and placement readiness</p>
           </div>
         </div>

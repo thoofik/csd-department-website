@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import NewNavigation from '../components/layout/NewNavigation';
 import HeroSection from '../components/sections/HeroSection';
 import { 
@@ -24,10 +25,12 @@ import {
   Shield,
   Zap,
   Target,
-  Sparkles
+  Sparkles,
+  Lightbulb
 } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
+import { InfiniteMovingCards } from '../components/ui/infinite-moving-cards';
 import { FacultyMember, Achievement, Facility, Event, NewsItem, Course, StudentProject } from '../types';
 
 // Real data from PESITM official website - Updated faculty order
@@ -190,6 +193,40 @@ const facultyMembers: FacultyMember[] = [
    }
 ];
 
+// Helper function for opening PDFs
+const openPdfInNewTab = (pdfFile: string) => {
+  console.log('Opening PDF:', pdfFile);
+  const url = `/${pdfFile}`;
+  console.log('PDF URL:', url);
+  try {
+    window.open(url, '_blank');
+  } catch (error) {
+    console.error('Error opening PDF:', error);
+  }
+};
+
+// About Our Department cards - only the 3 specified ones
+const aboutDepartmentCards = [
+  {
+    quote: "Combines core courses in Computer Science and Design with electives from Computer Science, Design, and Digital Media.",
+    name: "Core Courses",
+    title: "Comprehensive Curriculum",
+    icon: GraduationCap
+  },
+  {
+    quote: "State-of-the-art infrastructure and computing facilities with strong student-faculty interaction.",
+    name: "State-of-the-Art",
+    title: "Advanced Infrastructure",
+    icon: Building2
+  },
+  {
+    quote: "Consistently achieving academic excellence with industry recognition and partnerships.",
+    name: "Excellence",
+    title: "Academic Excellence",
+    icon: Trophy
+   }
+];
+
 const achievements: Achievement[] = [
   {
     id: "1",
@@ -224,10 +261,12 @@ const achievements: Achievement[] = [
     type: "department",
     date: "2023-2024",
     category: "Publications",
-    pdfFile: "CSD Newsletter 2024_20250804_130023_0000.pdf",
+    pdfFile: "CSD Newsletter 2024.pdf",
     additionalPdfFile: "CSD Newsletter 2023.pdf"
   }
 ];
+
+// Helper functions for button clicks - moved inside component
 
 const facilities: Facility[] = [
   {
@@ -362,33 +401,10 @@ const studentProjects: StudentProject[] = [
 
 // About Section Component with enhanced design
 const AboutSection: React.FC = () => {
-  const features = [
-    {
-      icon: GraduationCap,
-      title: "Core Courses",
-      description: "Combines core courses in Computer Science and Design with electives from Computer Science, Design, and Digital Media.",
-      color: "from-blue-500 to-blue-600",
-      bgColor: "from-blue-50 to-blue-100"
-    },
-
-    {
-      icon: Building2,
-      title: "State-of-the-Art",
-      description: "State-of-the-art infrastructure and computing facilities with strong student-faculty interaction.",
-      color: "from-blue-600 to-blue-700",
-      bgColor: "from-blue-100 to-blue-200"
-    },
-    {
-      icon: Trophy,
-      title: "Excellence",
-      description: "Consistently achieving academic excellence with industry recognition and partnerships.",
-      color: "from-blue-600 to-blue-700",
-      bgColor: "from-blue-100 to-blue-200"
-    }
-  ];
+  // Features array removed - now using moving cards only
 
   return (
-    <section id="about" className="py-16 sm:py-20 lg:py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
+    <section id="about" className="pt-2 pb-16 sm:py-20 lg:py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-pattern opacity-10 dark:opacity-20" />
       
@@ -400,41 +416,32 @@ const AboutSection: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16 lg:mb-20"
         >
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-full px-4 sm:px-6 py-2 sm:py-3 text-sm font-medium text-blue-700 mb-6 sm:mb-8 dark:from-blue-900/30 dark:to-blue-800/30 dark:border-blue-700/50 dark:text-blue-300">
+          <div className="mb-6 sm:mb-8 flex justify-center">
+            <div className="flex items-center space-x-2 px-4 sm:px-6 py-2 sm:py-3 text-sm font-medium text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800">
             <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
-            <span className="text-gray-700 dark:text-gray-300">About Our Department</span>
+            <span className="text-gray-700 dark:text-gray-300 display-font">About Our Department</span>
+            </div>
           </div>
           
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4 sm:mb-6 dark:text-gray-100">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4 sm:mb-6 dark:text-gray-100 display-font">
             About Our <span className="text-blue-600 dark:text-blue-400">Department</span>
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed dark:text-gray-300 px-2 sm:px-0">
+          <p className="text-sm sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed dark:text-gray-300 px-2 sm:px-0">
             The B.E Computer Science and Design (CSD) program focuses on developing students experienced with computing approaches, design tools, design approaches, and new digital media technologies.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16 max-w-6xl mx-auto">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div className="gradient-border">
-                <div className="gradient-border-content p-6 sm:p-8 h-full text-center">
-                  <div className={`w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${feature.color} rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg`}>
-                    <feature.icon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+        {/* InfiniteMovingCards for About Our Department */}
+        <div className="py-8 sm:py-12">
+          <InfiniteMovingCards
+            items={aboutDepartmentCards}
+            direction="right"
+            speed="normal"
+            className="max-w-7xl mx-auto"
+          />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-800 dark:text-white">{feature.title}</h3>
-                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">{feature.description}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+
+        {/* Static features removed - only keeping moving cards */}
       </div>
     </section>
   );
@@ -451,6 +458,24 @@ const FacultySection: React.FC<{
   useEffect(() => {
     console.log('Modal state changed:', { isModalOpen, selectedFaculty: selectedFaculty?.name });
   }, [isModalOpen, selectedFaculty]);
+
+  // Handle hydration mismatch by ensuring consistent classes
+  useEffect(() => {
+    // Remove any dynamically added classes that might cause hydration issues
+    const sweezyClasses = [
+      'sweezy-custom-cursor-hover',
+      'sweezy-custom-cursor-default-hover',
+      'sweezy-custom-cursor-default',
+      'sweezy-custom-cursor-pointer'
+    ];
+    
+    sweezyClasses.forEach(className => {
+      const elements = document.querySelectorAll(`.${className}`);
+      elements.forEach(el => {
+        el.classList.remove(className);
+      });
+    });
+  }, []);
 
   const openModal = (faculty: FacultyMember) => {
     console.log('Opening modal for:', faculty.name);
@@ -472,15 +497,17 @@ const FacultySection: React.FC<{
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <div className="inline-flex items-center space-x-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-blue-200 dark:border-blue-700 rounded-full px-3 sm:px-4 py-2 mb-4">
+          <div className="mb-4 flex justify-center">
+            <div className="flex items-center space-x-2 px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
             <Users className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
-            <span className="text-xs sm:text-sm font-medium text-blue-700 dark:text-blue-300">Meet Our Team</span>
+              <span>Meet Our Team</span>
+            </div>
           </div>
           
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-gray-800 dark:text-gray-100">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-gray-800 dark:text-gray-100 display-font">
             Our <span className="text-blue-600 dark:text-blue-400">Faculty</span>
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-2 sm:px-0">
+          <p className="text-sm sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-2 sm:px-0">
             Meet our dedicated faculty members who are committed to excellence in education and research.
           </p>
         </motion.div>
@@ -504,10 +531,14 @@ const FacultySection: React.FC<{
                  <div className="text-center">
                    <div className="relative mb-2 sm:mb-3 md:mb-4">
                      <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 mx-auto rounded-xl overflow-hidden">
-                      <img
+                      <Image
                         src={faculty.image}
                         alt={faculty.name}
+                        width={112}
+                        height={112}
                         className="w-full h-full object-cover object-top"
+                        priority={faculty.id === "1"} // Prioritize first faculty image
+                        loading={faculty.id === "1" ? "eager" : "lazy"}
                       />
                     </div>
                     
@@ -548,6 +579,76 @@ const AchievementsSection: React.FC = () => {
     window.open(`/${pdfFile}`, '_blank');
   };
 
+  // Helper functions for button clicks - using useCallback to ensure stability
+  const handle2023NewsletterClick = React.useCallback((filename: string) => {
+    console.log('2023 Newsletter clicked, file:', filename);
+    openPdfInNewTab(filename);
+  }, [openPdfInNewTab]);
+
+  const handle2024NewsletterClick = React.useCallback((filename: string) => {
+    console.log('2024 Newsletter clicked, file:', filename);
+    openPdfInNewTab(filename);
+  }, [openPdfInNewTab]);
+
+  const handleExternalLinkClick = React.useCallback((url: string) => {
+    console.log('External link clicked, URL:', url);
+    window.open(url, '_blank');
+  }, []);
+
+  // Convert existing achievements to InfiniteMovingCards format - inside component for stability
+  const achievementCards = React.useMemo(() => {
+    return achievements.map(achievement => {
+      console.log('Processing achievement:', achievement.title);
+      console.log('PDF File:', achievement.pdfFile);
+      console.log('Additional PDF File:', achievement.additionalPdfFile);
+      
+      return {
+        quote: achievement.description,
+        name: achievement.title,
+        title: achievement.category,
+        date: achievement.date,
+        participants: achievement.participants,
+        icon: achievement.pdfFile ? BookOpen : Trophy,
+        buttons: achievement.pdfFile ? [
+          ...(achievement.additionalPdfFile ? [{
+            text: "2023",
+            className: "bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700",
+            icon: BookOpen,
+            onClick: () => {
+              console.log('2023 button onClick created for:', achievement.additionalPdfFile);
+              handle2023NewsletterClick(achievement.additionalPdfFile!);
+            }
+          }] : []),
+          {
+            text: achievement.additionalPdfFile ? "2024" : "View",
+            className: "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700",
+            icon: BookOpen,
+            onClick: () => {
+              console.log('2024 button onClick created for:', achievement.pdfFile);
+              handle2024NewsletterClick(achievement.pdfFile!);
+            }
+          }
+        ] : achievement.externalLink ? [{
+          text: "Visit Website",
+          className: "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800",
+          icon: ExternalLink,
+          onClick: () => {
+            console.log('External link button onClick created for:', achievement.externalLink);
+            handleExternalLinkClick(achievement.externalLink!);
+          }
+        }] : undefined
+      };
+    });
+  }, [handle2023NewsletterClick, handle2024NewsletterClick, handleExternalLinkClick]);
+
+  // Test functions on mount
+  React.useEffect(() => {
+    console.log('AchievementsSection mounted, testing functions...');
+    console.log('handle2023NewsletterClick:', typeof handle2023NewsletterClick);
+    console.log('handle2024NewsletterClick:', typeof handle2024NewsletterClick);
+    console.log('achievementCards length:', achievementCards.length);
+  }, [achievementCards, handle2023NewsletterClick, handle2024NewsletterClick]);
+
   return (
     <section id="achievements" className="py-16 sm:py-20 bg-white dark:bg-gray-900 relative overflow-hidden">
       <div className="absolute inset-0 bg-pattern opacity-10 dark:opacity-20" />
@@ -560,95 +661,31 @@ const AchievementsSection: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-4 sm:mb-6">
+          <div className="mb-4 sm:mb-6 flex justify-center">
+            <div className="flex items-center space-x-2 px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800">
             <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
-            <span className="text-xs sm:text-sm font-medium text-blue-700 dark:text-blue-300">Department Achievements</span>
+              <span className="display-font">Department Achievements</span>
+            </div>
           </div>
           
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-800 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-800 dark:text-white display-font">
             Department <span className="text-blue-600 dark:text-blue-400">Achievements</span>
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-2 sm:px-0">
+          <p className="text-sm sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-2 sm:px-0">
             Celebrating the success and accomplishments of our students and faculty.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {achievements.map((achievement, index) => (
-            <motion.div
-              key={achievement.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div className="gradient-border">
-                <div className="gradient-border-content p-4 sm:p-6 lg:p-8 h-full">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                    {achievement.pdfFile ? (
-                      <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 dark:text-blue-400" />
-                    ) : (
-                      <Trophy className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 dark:text-blue-400" />
-                    )}
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-800 dark:text-white">{achievement.title}</h3>
-                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-3 sm:mb-4 leading-relaxed">{achievement.description}</p>
-                  <div className="text-xs sm:text-sm text-blue-600 dark:text-blue-400 font-medium mb-2 sm:mb-3">
-                    {achievement.date} • {achievement.category}
-                  </div>
-                  {achievement.participants && (
-                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 sm:mb-4">
-                      <span className="font-medium">Participants:</span> {achievement.participants.join(', ')}
-                    </div>
-                  )}
-                  {achievement.pdfFile && (
-                    <div className="mt-3 sm:mt-4">
-                      {achievement.additionalPdfFile ? (
-                        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                          <button
-                            onClick={() => openPdfInNewTab(achievement.additionalPdfFile!)}
-                            className="inline-flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 font-medium text-sm"
-                          >
-                            <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
-                            <span>2023 Newsletter</span>
-                          </button>
-                          <button
-                            onClick={() => openPdfInNewTab(achievement.pdfFile!)}
-                            className="inline-flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-medium text-sm"
-                          >
-                            <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
-                            <span>2024 Newsletter</span>
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => openPdfInNewTab(achievement.pdfFile!)}
-                          className="inline-flex items-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-medium text-sm"
-                        >
-                          <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
-                          <span>View Newsletter</span>
-                        </button>
-                      )}
-                    </div>
-                  )}
-                  {achievement.externalLink && (
-                    <div className="mt-3 sm:mt-4">
-                      <a
-                        href={achievement.externalLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 font-medium text-sm"
-                      >
-                        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
-                        <span>Visit Website</span>
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        {/* Static cards removed - only keeping moving cards */}
+
+        {/* InfiniteMovingCards for Department Achievements */}
+        <div className="py-8 sm:py-12">
+          <InfiniteMovingCards
+            items={achievementCards}
+            direction="left"
+            speed="normal"
+            className="max-w-7xl mx-auto"
+          />
         </div>
 
       </div>
@@ -901,10 +938,13 @@ const Footer: React.FC = () => {
           {/* Logo and Institution Info */}
           <div className="flex items-center space-x-3 sm:space-x-4">
                          <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-white p-1">
-               <img 
+               <Image 
                  src="/pesitm-logo.jpeg" 
                  alt="PESITM Logo" 
+                 width={64}
+                 height={64}
                  className="w-full h-full object-contain"
+                 loading="lazy"
                />
              </div>
             <div>
@@ -932,6 +972,39 @@ const Footer: React.FC = () => {
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFaculty, setSelectedFaculty] = useState<FacultyMember | null>(null);
+
+  // Global hydration mismatch fix for browser extensions
+  useEffect(() => {
+    const removeSweezyClasses = () => {
+      const sweezyClasses = [
+        'sweezy-custom-cursor-hover',
+        'sweezy-custom-cursor-default-hover',
+        'sweezy-custom-cursor-default',
+        'sweezy-custom-cursor-pointer'
+      ];
+      
+      sweezyClasses.forEach(className => {
+        const elements = document.querySelectorAll(`.${className}`);
+        elements.forEach(el => {
+          el.classList.remove(className);
+        });
+      });
+    };
+
+    // Run immediately and on any DOM changes
+    removeSweezyClasses();
+    
+    // Set up observer to catch dynamically added classes
+    const observer = new MutationObserver(removeSweezyClasses);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -1017,10 +1090,13 @@ export default function Home() {
                 {/* Faculty Image and Basic Info */}
                 <div className="lg:col-span-1">
                   <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 mx-auto rounded-2xl overflow-hidden mb-4 sm:mb-6">
-                    <img
+                    <Image
                       src={selectedFaculty.image}
                       alt={selectedFaculty.name}
+                      width={192}
+                      height={192}
                       className="w-full h-full object-cover object-top"
+                      priority
                     />
                   </div>
                   

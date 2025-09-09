@@ -9,9 +9,10 @@ import { useTheme } from '../../contexts/ThemeContext';
 
 const HeroSection: React.FC = () => {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  // Simplified scroll effects for better performance
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 100]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const y = useTransform(scrollY, [0, 500], [0, 50]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0.8]);
   
   // Use theme with fallback to prevent errors
   const themeContext = useTheme();

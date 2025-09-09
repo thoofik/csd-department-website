@@ -9,7 +9,7 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import ThemeToggle from "./ThemeToggle";
 
 export const VerticalFloatingDock = ({
@@ -20,13 +20,28 @@ export const VerticalFloatingDock = ({
   className?: string;
 }) => {
   let mouseY = useMotionValue(Infinity);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   return (
     <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ 
+        opacity: isScrolled ? 1 : 0
+      }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       onMouseMove={(e) => mouseY.set(e.clientY)}
       onMouseLeave={() => mouseY.set(Infinity)}
       className={cn(
-        "fixed left-4 top-1/2 transform -translate-y-1/2 z-50 hidden md:flex flex-col gap-4 py-6 px-3 rounded-2xl bg-gray-50/80 dark:bg-gray-900/20 backdrop-blur-lg border border-gray-200/30 dark:border-gray-700/20 shadow-xl hover:shadow-2xl transition-all duration-300",
+        "fixed left-6 top-1/2 transform -translate-y-1/2 z-50 hidden md:flex flex-col gap-6 py-8 px-4 rounded-2xl bg-gray-50/80 dark:bg-gray-900/20 backdrop-blur-lg border border-gray-200/30 dark:border-gray-700/20 shadow-xl hover:shadow-2xl transition-all duration-300",
         className,
       )}
     >
@@ -76,27 +91,27 @@ function VerticalIconContainer({
     [22, 28, 22],
   );
 
-  // Match Aceternity spring configuration exactly
+  // Optimized spring configuration for better performance
   let width = useSpring(widthTransform, {
-    mass: 0.1,
-    stiffness: 150,
-    damping: 12,
+    mass: 0.2,
+    stiffness: 100,
+    damping: 20,
   });
   let height = useSpring(heightTransform, {
-    mass: 0.1,
-    stiffness: 150,
-    damping: 12,
+    mass: 0.2,
+    stiffness: 100,
+    damping: 20,
   });
 
   let widthIcon = useSpring(widthTransformIcon, {
-    mass: 0.1,
-    stiffness: 150,
-    damping: 12,
+    mass: 0.2,
+    stiffness: 100,
+    damping: 20,
   });
   let heightIcon = useSpring(heightTransformIcon, {
-    mass: 0.1,
-    stiffness: 150,
-    damping: 12,
+    mass: 0.2,
+    stiffness: 100,
+    damping: 20,
   });
 
   const [hovered, setHovered] = useState(false);

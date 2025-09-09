@@ -51,20 +51,6 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/splash-1080x1920.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/splash-1440x2560.png",
-      "sizes": "1440x2560",
-      "type": "image/png",
-      "form_factor": "narrow"
-    }
-  ],
   "categories": ["education", "technology", "university"],
   "lang": "en",
   "dir": "ltr"

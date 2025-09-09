@@ -14,16 +14,16 @@ export const metadata: Metadata = {
       { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
       { url: '/light-logo-icon-48x48.png', type: 'image/png', sizes: '48x48' },
       { url: '/light-logo-icon-96x96.png', type: 'image/png', sizes: '96x96' },
-      { url: '/light-logo-icon-192x192.png', type: 'image/png', sizes: '192x192' },
-      { url: '/light-logo-icon-512x512.png', type: 'image/png', sizes: '512x512' },
+      { url: '/app-icon-192x192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/app-icon-512x512.png', type: 'image/png', sizes: '512x512' },
     ],
     apple: [
-      { url: '/light-logo-apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/app-icon-180x180.png', sizes: '180x180', type: 'image/png' },
     ],
     other: [
       {
         rel: 'apple-touch-icon-precomposed',
-        url: '/light-logo-apple-touch-icon.png',
+        url: '/app-icon-180x180.png',
         sizes: '180x180',
       },
     ],

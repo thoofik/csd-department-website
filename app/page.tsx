@@ -432,12 +432,15 @@ const AboutSection: React.FC = () => {
         </motion.div>
 
         {/* InfiniteMovingCards for About Our Department */}
-        <div className="py-8 sm:py-12">
+        <div className="py-8 sm:py-12 relative">
+          {/* Touch instruction */}
+          {/* drag hint removed */}
           <InfiniteMovingCards
             items={aboutDepartmentCards}
             direction="right"
             speed="normal"
             className="max-w-7xl mx-auto"
+            enableTouchControls={true}
           />
                   </div>
 
@@ -461,6 +464,9 @@ const FacultySection: React.FC<{
 
   // Handle hydration mismatch by ensuring consistent classes
   useEffect(() => {
+    // Only run on client side to prevent hydration mismatch
+    if (typeof window === 'undefined') return;
+    
     // Remove any dynamically added classes that might cause hydration issues
     const sweezyClasses = [
       'sweezy-custom-cursor-hover',
@@ -679,12 +685,15 @@ const AchievementsSection: React.FC = () => {
         {/* Static cards removed - only keeping moving cards */}
 
         {/* InfiniteMovingCards for Department Achievements */}
-        <div className="py-8 sm:py-12">
+        <div className="py-8 sm:py-12 relative">
+          {/* Touch instruction */}
+          {/* drag hint removed */}
           <InfiniteMovingCards
             items={achievementCards}
             direction="left"
             speed="normal"
             className="max-w-7xl mx-auto"
+            enableTouchControls={true}
           />
         </div>
 
@@ -975,6 +984,9 @@ export default function Home() {
 
   // Global hydration mismatch fix for browser extensions
   useEffect(() => {
+    // Only run on client side to prevent hydration mismatch
+    if (typeof window === 'undefined') return;
+    
     const removeSweezyClasses = () => {
       const sweezyClasses = [
         'sweezy-custom-cursor-hover',
@@ -1014,6 +1026,9 @@ export default function Home() {
 
   // Prevent body scrolling when modal is open
   useEffect(() => {
+    // Only run on client side to prevent hydration mismatch
+    if (typeof window === 'undefined') return;
+    
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -1027,6 +1042,9 @@ export default function Home() {
 
   // Handle escape key to close modal
   useEffect(() => {
+    // Only run on client side to prevent hydration mismatch
+    if (typeof window === 'undefined') return;
+    
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isModalOpen) {
         closeModal();

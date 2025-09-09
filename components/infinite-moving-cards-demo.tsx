@@ -6,10 +6,18 @@ import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 export default function InfiniteMovingCardsDemo() {
   return (
     <div className="h-[40rem] rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+      {/* Instructions */}
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-30">
+        <div className="bg-black/80 dark:bg-white/80 text-white dark:text-black px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm">
+          💡 Touch and drag to move cards manually
+        </div>
+      </div>
+      
       <InfiniteMovingCards
         items={testimonials}
         direction="right"
         speed="slow"
+        enableTouchControls={true}
       />
     </div>
   );

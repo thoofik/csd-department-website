@@ -2,7 +2,7 @@
   "name": "PES Institute of Technology and Management - CSD Department",
   "short_name": "PESITM CSD",
   "description": "Official website of the Computer Science and Design Department at PES Institute of Technology and Management",
-  "start_url": "/",
+  "start_url": "/?v=3",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
@@ -16,26 +16,6 @@
     {
       "src": "/favicon-32x32.png",
       "sizes": "32x32",
-      "type": "image/png"
-    },
-    {
-      "src": "/light-logo-icon-48x48.png",
-      "sizes": "48x48",
-      "type": "image/png"
-    },
-    {
-      "src": "/light-logo-icon-72x72.png",
-      "sizes": "72x72",
-      "type": "image/png"
-    },
-    {
-      "src": "/light-logo-icon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    },
-    {
-      "src": "/light-logo-icon-144x144.png",
-      "sizes": "144x144",
       "type": "image/png"
     },
     {

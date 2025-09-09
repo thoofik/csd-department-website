@@ -139,7 +139,7 @@ const facultyMembers: FacultyMember[] = [
      position: "Assistant Professor",
      qualification: "B.E, M.Tech",
      specialization: ["Computer Science", "Database Systems", "Web Technologies", "IoT", "Machine Learning", "Precision Farming", "Agriculture Technology"],
-     experience: "Not specified",
+     experience: "1 Year",
      contact: "harishm1843@pestrust.edu.in",
      phone: "8296317636",
      image: "/mr-harish-m.jpg",

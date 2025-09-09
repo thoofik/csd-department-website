@@ -73,8 +73,8 @@ export const InfiniteMovingCards = ({
     e.preventDefault();
     document.body.style.userSelect = 'none';
     document.body.style.webkitUserSelect = 'none';
-    document.body.style.mozUserSelect = 'none';
-    document.body.style.msUserSelect = 'none';
+    (document.body.style as any).mozUserSelect = 'none';
+    (document.body.style as any).msUserSelect = 'none';
     
     isDragging.current = true;
     isManualMode.current = true;
@@ -185,8 +185,8 @@ export const InfiniteMovingCards = ({
     // Restore text selection
     document.body.style.userSelect = '';
     document.body.style.webkitUserSelect = '';
-    document.body.style.mozUserSelect = '';
-    document.body.style.msUserSelect = '';
+    (document.body.style as any).mozUserSelect = '';
+    (document.body.style as any).msUserSelect = '';
     
     isDragging.current = false;
     setIsDraggingState(false);
@@ -227,8 +227,8 @@ export const InfiniteMovingCards = ({
       e.preventDefault();
       document.body.style.userSelect = 'none';
       document.body.style.webkitUserSelect = 'none';
-      document.body.style.mozUserSelect = 'none';
-      document.body.style.msUserSelect = 'none';
+      (document.body.style as any).mozUserSelect = 'none';
+      (document.body.style as any).msUserSelect = 'none';
       
       console.log('Touch start triggered!', { enableTouchControls, touches: e.touches.length });
       
@@ -298,8 +298,8 @@ export const InfiniteMovingCards = ({
       // Restore text selection
       document.body.style.userSelect = '';
       document.body.style.webkitUserSelect = '';
-      document.body.style.mozUserSelect = '';
-      document.body.style.msUserSelect = '';
+      (document.body.style as any).mozUserSelect = '';
+      (document.body.style as any).msUserSelect = '';
       
       isDragging.current = false;
       setIsDraggingState(false);
@@ -379,7 +379,7 @@ export const InfiniteMovingCards = ({
             className="relative w-[280px] sm:w-[320px] md:w-[380px] max-w-full shrink-0 group select-none"
             key={`${item.name}-${idx}`}
             onClick={(e) => e.stopPropagation()}
-            style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none' }}
+            style={{ userSelect: 'none', WebkitUserSelect: 'none' } as React.CSSProperties & { MozUserSelect?: string; msUserSelect?: string }}
           >
             <div className="gradient-border">
               <div className="gradient-border-content p-3 sm:p-4 md:p-6 lg:p-8 h-[280px] sm:h-[320px] md:h-[400px]">

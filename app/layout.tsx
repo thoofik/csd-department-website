@@ -56,14 +56,25 @@ export default function RootLayout({
               (function() {
                 try {
                   var theme = localStorage.getItem('theme');
-                  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    document.documentElement.classList.add('dark');
-                    document.documentElement.classList.remove('light');
+                  var resolvedTheme;
+                  
+                  if (theme === 'dark' || theme === 'light') {
+                    // Use saved theme preference
+                    resolvedTheme = theme;
+                    console.log('Using saved theme:', resolvedTheme);
                   } else {
-                    document.documentElement.classList.add('light');
-                    document.documentElement.classList.remove('dark');
+                    // Auto-detect system theme preference on first visit
+                    var systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    resolvedTheme = systemPrefersDark ? 'dark' : 'light';
+                    console.log('System prefers dark:', systemPrefersDark, 'Setting theme to:', resolvedTheme);
                   }
+                  
+                  document.documentElement.classList.remove('light', 'dark');
+                  document.documentElement.classList.add(resolvedTheme);
                 } catch (e) {
+                  console.log('Error in initial theme script, falling back to light');
+                  // Fallback to light theme
+                  document.documentElement.classList.remove('light', 'dark');
                   document.documentElement.classList.add('light');
                 }
               })();

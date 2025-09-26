@@ -7,6 +7,7 @@ type Theme = 'light' | 'dark';
 interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
+  setTheme: (theme: Theme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -19,6 +20,9 @@ export const useTheme = () => {
       theme: 'light' as Theme,
       toggleTheme: () => {
         // Silent fallback to prevent console warnings during SSR
+      },
+      setTheme: () => {
+        // Silent fallback
       }
     };
   }
@@ -33,27 +37,55 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setMounted(true);
     
     try {
-      // Get theme from localStorage or system preference
+      // Get theme from localStorage or detect system preference
       const savedTheme = localStorage.getItem('theme') as Theme;
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       
       if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+        console.log('Using saved theme:', savedTheme);
         setTheme(savedTheme);
       } else {
+        // Auto-detect system theme preference on first visit
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const systemTheme = systemPrefersDark ? 'dark' : 'light';
+        console.log('System prefers dark:', systemPrefersDark, 'Setting theme to:', systemTheme);
         setTheme(systemTheme);
       }
     } catch (error) {
+      console.log('Error in theme detection, falling back to light');
       // Fallback to light theme if there's an error
       setTheme('light');
     }
   }, []);
 
+  // Listen for system theme changes when no user preference is set
+  useEffect(() => {
+    if (!mounted) return;
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    const handleChange = () => {
+      // Only auto-switch if user hasn't manually set a preference
+      const savedTheme = localStorage.getItem('theme');
+      if (!savedTheme) {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        setTheme(systemTheme);
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [mounted]);
+
+  // Apply theme to DOM
   useEffect(() => {
     if (mounted) {
       try {
         const root = window.document.documentElement;
+        
         root.classList.remove('light', 'dark');
         root.classList.add(theme);
+        
+        // Save the theme preference
         localStorage.setItem('theme', theme);
       } catch (error) {
         // Silent error handling
@@ -65,9 +97,31 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
 
+  const handleSetTheme = (newTheme: Theme) => {
+    setTheme(newTheme);
+  };
+
+  // Function to reset theme to system detection
+  const resetToSystemTheme = () => {
+    try {
+      localStorage.removeItem('theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const systemTheme = systemPrefersDark ? 'dark' : 'light';
+      console.log('Resetting to system theme:', systemTheme);
+      setTheme(systemTheme);
+    } catch (error) {
+      console.log('Error resetting theme, falling back to light');
+      setTheme('light');
+    }
+  };
+
   // Always render the provider with consistent theme
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ 
+      theme, 
+      toggleTheme, 
+      setTheme: handleSetTheme 
+    }}>
       <div suppressHydrationWarning>
         {children}
       </div>

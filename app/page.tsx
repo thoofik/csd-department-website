@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import NewNavigation from '../components/layout/NewNavigation';
 import HeroSection from '../components/sections/HeroSection';
+import { useTheme } from '../contexts/ThemeContext';
 import { 
   GraduationCap, 
   Users, 
@@ -160,7 +161,7 @@ const facultyMembers: FacultyMember[] = [
      phone: "9740418759",
      image: "/nithya.jpg",
      lab: "",
-     achievements: ["Machine Learning", "Innovation", "Research Publications", "Machine Learning Detection"],
+     achievements: [],
      publications: [
        "Detection of fake online reviews using Machine Learning Technique - Published in the International Journal for research in Applied science and engineering technology, Volume-8, Issue-8, August 2020"
      ]
@@ -981,6 +982,7 @@ const Footer: React.FC = () => {
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFaculty, setSelectedFaculty] = useState<FacultyMember | null>(null);
+  const { theme } = useTheme();
 
   // Global hydration mismatch fix for browser extensions
   useEffect(() => {
@@ -1065,6 +1067,8 @@ export default function Home() {
       <div className={isModalOpen ? 'hidden' : 'block'}>
         <NewNavigation />
       </div>
+      
+      
       <HeroSection />
       <AboutSection />
       <FacultySection 

@@ -128,10 +128,10 @@ function VerticalIconContainer({
         <AnimatePresence>
           {hovered && (
             <motion.div
-              initial={{ opacity: 0, y: 10, x: "-50%" }}
-              animate={{ opacity: 1, y: 0, x: "-50%" }}
-              exit={{ opacity: 0, y: 2, x: "-50%" }}
-              className="absolute -top-8 left-1/2 w-fit rounded-md border border-gray-200/80 bg-gray-100/95 px-2 py-0.5 text-xs whitespace-pre text-neutral-700 dark:border-gray-700/50 dark:bg-gray-800/90 dark:text-white backdrop-blur-sm"
+              initial={{ opacity: 0, x: -10, y: "-50%" }}
+              animate={{ opacity: 1, x: 0, y: "-50%" }}
+              exit={{ opacity: 0, x: 2, y: "-50%" }}
+              className="absolute left-full top-1/2 ml-3 w-fit rounded-md border border-gray-200/80 bg-gray-100/95 px-2 py-0.5 text-xs whitespace-pre text-neutral-700 dark:border-gray-700/50 dark:bg-gray-800/90 dark:text-white backdrop-blur-sm"
             >
               {title}
             </motion.div>

@@ -47,7 +47,9 @@ const ThemeToggle: React.FC = () => {
       <motion.div
         className="absolute inset-0 rounded-xl border-2 border-transparent"
         animate={{
-          borderColor: theme === 'light' ? 'rgba(59, 130, 246, 0.3)' : 'rgba(251, 191, 36, 0.3)',
+          borderColor: theme === 'light' 
+            ? 'rgba(59, 130, 246, 0.3)' // Blue for light
+            : 'rgba(251, 191, 36, 0.3)', // Yellow for dark
         }}
         transition={{ duration: 0.3 }}
       />

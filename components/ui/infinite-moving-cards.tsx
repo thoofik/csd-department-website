@@ -69,6 +69,15 @@ export const InfiniteMovingCards = ({
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!enableTouchControls) return;
     
+    // Check if the mouse target is a button or inside a button
+    const target = e.target as HTMLElement;
+    const isButton = target.tagName === 'BUTTON' || target.closest('button');
+    
+    // If it's a button, don't prevent default to allow normal button behavior
+    if (isButton) {
+      return;
+    }
+    
     // Prevent text selection during drag
     e.preventDefault();
     document.body.style.userSelect = 'none';
@@ -161,6 +170,15 @@ export const InfiniteMovingCards = ({
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!enableTouchControls || !isDragging.current) return;
     
+    // Check if the mouse target is a button or inside a button
+    const target = e.target as HTMLElement;
+    const isButton = target.tagName === 'BUTTON' || target.closest('button');
+    
+    // If it's a button, don't prevent default to allow normal button behavior
+    if (isButton) {
+      return;
+    }
+    
     e.preventDefault();
     const currentX = e.clientX;
     const deltaX = currentX - lastTouchX.current;
@@ -249,6 +267,15 @@ export const InfiniteMovingCards = ({
     const handleTouchStartNonPassive = (e: TouchEvent) => {
       if (!enableTouchControls) return;
       
+      // Check if the touch target is a button or inside a button
+      const target = e.target as HTMLElement;
+      const isButton = target.tagName === 'BUTTON' || target.closest('button');
+      
+      // If it's a button, don't prevent default to allow normal button behavior
+      if (isButton) {
+        return;
+      }
+      
       // Prevent text selection during drag
       e.preventDefault();
       document.body.style.userSelect = 'none';
@@ -283,6 +310,15 @@ export const InfiniteMovingCards = ({
 
     const handleTouchMoveNonPassive = (e: TouchEvent) => {
       if (!enableTouchControls || !isDragging.current) return;
+      
+      // Check if the touch target is a button or inside a button
+      const target = e.target as HTMLElement;
+      const isButton = target.tagName === 'BUTTON' || target.closest('button');
+      
+      // If it's a button, don't prevent default to allow normal button behavior
+      if (isButton) {
+        return;
+      }
       
       e.preventDefault();
       const currentX = e.touches[0].clientX;
@@ -461,7 +497,7 @@ export const InfiniteMovingCards = ({
               
               {/* Buttons */}
               {item.buttons && (
-                <div className="mt-2 sm:mt-3 md:mt-4 flex flex-row gap-3 sm:gap-4 md:gap-5 justify-center">
+                <div className="mt-2 sm:mt-3 md:mt-4 flex flex-row gap-2 sm:gap-3 md:gap-4 justify-center">
                   {item.buttons.map((button, btnIdx) => (
                     <button
                       key={btnIdx}
@@ -474,7 +510,7 @@ export const InfiniteMovingCards = ({
                           button.onClick();
                         }
                       }}
-                      className={`flex-1 sm:flex-none inline-flex items-center justify-center space-x-1 sm:space-x-1.5 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 rounded-md sm:rounded-lg transition-all duration-300 font-medium text-xs sm:text-sm md:text-sm ${button.className}`}
+                      className={`flex-1 sm:flex-none inline-flex items-center justify-center space-x-1 sm:space-x-1.5 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 rounded-lg sm:rounded-lg transition-all duration-300 font-medium text-xs sm:text-sm md:text-sm min-h-[44px] sm:min-h-[40px] touch-manipulation ${button.className}`}
                     >
                       {button.icon && <button.icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />}
                       <span className="truncate">{button.text}</span>

@@ -35,9 +35,13 @@ export async function DELETE(
       if (success) {
         // Broadcast real-time update to all connected clients for this student
         try {
-          await fetch(`${process.env.NODE_ENV === 'production' 
-            ? 'https://csd-department-website-a2bttkp47-thoofiks-projects.vercel.app' 
-            : 'http://localhost:3000'}/api/broadcast`, {
+          const baseUrl = process.env.VERCEL_URL 
+            ? `https://${process.env.VERCEL_URL}` 
+            : process.env.NODE_ENV === 'production' 
+              ? 'https://csd-department-website-a2bttkp47-thoofiks-projects.vercel.app'
+              : 'http://localhost:3000';
+          
+          await fetch(`${baseUrl}/api/broadcast`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

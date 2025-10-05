@@ -32,11 +32,15 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   useEffect(() => {
     // Initialize socket connection
     const socketInstance = io(process.env.NODE_ENV === 'production' 
-      ? 'https://csd-department-website-a2bttkp47-thoofiks-projects.vercel.app' 
+      ? window.location.origin 
       : 'http://localhost:3000', 
       {
         path: '/api/socketio',
         transports: ['websocket', 'polling'],
+        autoConnect: true,
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000,
       }
     );
 

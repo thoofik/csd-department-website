@@ -220,15 +220,22 @@ export async function listAllResumes(): Promise<ResumeFile[]> {
 // Delete resume from Cloudinary
 export async function deleteResume(publicId: string): Promise<boolean> {
   try {
+    console.log('deleteResume called with publicId:', publicId);
+    
     if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
       console.warn('Cloudinary credentials not configured');
+      console.log('CLOUDINARY_CLOUD_NAME:', process.env.CLOUDINARY_CLOUD_NAME);
+      console.log('CLOUDINARY_API_KEY:', process.env.CLOUDINARY_API_KEY ? 'SET' : 'NOT SET');
+      console.log('CLOUDINARY_API_SECRET:', process.env.CLOUDINARY_API_SECRET ? 'SET' : 'NOT SET');
       return false;
     }
 
+    console.log('Attempting to delete from Cloudinary:', publicId);
     const result = await cloudinary.uploader.destroy(publicId, {
       resource_type: 'raw',
     });
 
+    console.log('Cloudinary delete result:', result);
     return result.result === 'ok';
   } catch (error) {
     console.error('Error deleting resume:', error);

@@ -30,9 +30,11 @@ const StudentDetailPage: React.FC = () => {
   const [apiStudent, setApiStudent] = useState<Student | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const usn = decodeURIComponent(params.usn);
+  const usn = params?.usn ? decodeURIComponent(params.usn) : '';
 
   useEffect(() => {
+    if (!usn) return; // Early return if no USN
+    
     let cancelled = false;
     const load = async () => {
       try {

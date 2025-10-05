@@ -10,6 +10,7 @@ cloudinary.config({
 export interface UploadResult {
   success: boolean;
   fileName?: string;
+  originalFileName?: string;
   fileUrl?: string;
   publicId?: string;
   message?: string;
@@ -17,7 +18,8 @@ export interface UploadResult {
 
 export interface ResumeFile {
   id: string;
-  fileName: string;
+  fileName: string; // Original filename for display
+  storageFileName: string; // Storage filename for API operations
   studentUSN: string;
   uploadDate: string;
   fileSize: number;
@@ -31,7 +33,8 @@ export async function uploadToCloudinary(
   file: Buffer,
   fileName: string,
   contentType: string,
-  studentUSN: string
+  studentUSN: string,
+  originalFileName: string
 ): Promise<UploadResult> {
   try {
     if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
@@ -41,10 +44,10 @@ export async function uploadToCloudinary(
       };
     }
 
-    // Generate unique public ID
+    // Generate unique public ID with file extension
     const timestamp = Date.now();
     const fileExtension = fileName.split('.').pop();
-    const publicId = `resumes/${studentUSN}/${studentUSN}_${timestamp}`;
+    const publicId = `resumes/${studentUSN}/${studentUSN}_${timestamp}.${fileExtension}`;
     
     // Upload to Cloudinary
     const result = await new Promise((resolve, reject) => {
@@ -56,6 +59,9 @@ export async function uploadToCloudinary(
           use_filename: false,
           unique_filename: true,
           overwrite: false,
+          context: `original_filename=${originalFileName}|student_usn=${studentUSN}`,
+          access_mode: 'public', // Make files publicly accessible
+          type: 'upload', // Ensure it's an upload type
         },
         (error, result) => {
           if (error) {
@@ -72,6 +78,7 @@ export async function uploadToCloudinary(
     return {
       success: true,
       fileName: fileName,
+      originalFileName: originalFileName,
       fileUrl: uploadResult.secure_url,
       publicId: uploadResult.public_id,
       message: 'File uploaded successfully to Cloudinary',
@@ -92,11 +99,12 @@ export function getDownloadUrl(publicId: string): string {
       throw new Error('Cloudinary credentials not configured');
     }
 
-    // Generate a direct download URL
+    // Generate a direct download URL without authentication
     const url = cloudinary.url(publicId, {
       resource_type: 'raw',
       secure: true,
       flags: 'attachment', // Forces download instead of viewing
+      sign_url: false, // Don't sign the URL to make it publicly accessible
     });
 
     return url;
@@ -106,24 +114,6 @@ export function getDownloadUrl(publicId: string): string {
   }
 }
 
-// Get public URL for viewing
-export function getPublicUrl(publicId: string): string {
-  try {
-    if (!process.env.CLOUDINARY_CLOUD_NAME) {
-      throw new Error('Cloudinary credentials not configured');
-    }
-
-    const url = cloudinary.url(publicId, {
-      resource_type: 'raw',
-      secure: true,
-    });
-
-    return url;
-  } catch (error) {
-    console.error('Error getting public URL:', error);
-    throw new Error('Failed to get public URL');
-  }
-}
 
 // List all resumes for a specific student
 export async function listStudentResumes(studentUSN: string): Promise<ResumeFile[]> {
@@ -140,12 +130,22 @@ export async function listStudentResumes(studentUSN: string): Promise<ResumeFile
       .execute();
 
     const resumes: ResumeFile[] = result.resources.map((resource: any) => {
-      const fileName = resource.public_id.split('/').pop() || '';
+      // Extract original filename from context, fallback to public_id
+      let fileName = '';
+      if (resource.context && resource.context.original_filename) {
+        fileName = resource.context.original_filename;
+      } else {
+        fileName = resource.public_id.split('/').pop() || '';
+      }
+      
+      // Extract storage filename from public_id
+      const storageFileName = resource.public_id.split('/').pop() || '';
       const downloadUrl = getDownloadUrl(resource.public_id);
       
       return {
         id: resource.public_id,
         fileName: fileName,
+        storageFileName: storageFileName,
         studentUSN: studentUSN,
         uploadDate: resource.created_at,
         fileSize: resource.bytes,
@@ -178,13 +178,29 @@ export async function listAllResumes(): Promise<ResumeFile[]> {
 
     const resumes: ResumeFile[] = result.resources.map((resource: any) => {
       const pathParts = resource.public_id.split('/');
-      const studentUSN = pathParts[1] || '';
-      const fileName = pathParts[2] || '';
+      
+      // Extract student USN from path
+      let studentUSN = '';
+      if (pathParts.length >= 3) {
+        studentUSN = pathParts[1] || '';
+      }
+      
+      // Extract original filename from context, fallback to public_id
+      let fileName = '';
+      if (resource.context && resource.context.original_filename) {
+        fileName = resource.context.original_filename;
+      } else {
+        fileName = resource.public_id.split('/').pop() || '';
+      }
+      
+      // Extract storage filename from public_id
+      const storageFileName = resource.public_id.split('/').pop() || '';
       const downloadUrl = getDownloadUrl(resource.public_id);
       
       return {
         id: resource.public_id,
         fileName: fileName,
+        storageFileName: storageFileName,
         studentUSN: studentUSN,
         uploadDate: resource.created_at,
         fileSize: resource.bytes,

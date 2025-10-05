@@ -45,13 +45,13 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Generate unique filename
+    // Generate unique filename for storage (with USN prefix for organization)
     const timestamp = Date.now();
     const fileExtension = file.name.split('.').pop();
-    const fileName = `${studentUSN}_${timestamp}.${fileExtension}`;
+    const storageFileName = `${studentUSN}_${timestamp}.${fileExtension}`;
 
     // Upload to Cloudinary Storage
-    const uploadResult = await uploadToCloudinary(buffer, fileName, file.type, studentUSN);
+    const uploadResult = await uploadToCloudinary(buffer, storageFileName, file.type, studentUSN, file.name);
 
     if (!uploadResult.success) {
       return NextResponse.json({ 
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     const fileMetadata = {
       id: uploadResult.publicId || `${studentUSN}_${timestamp}`,
       originalName: file.name,
-      fileName: fileName,
+      fileName: uploadResult.originalFileName || file.name, // Use original filename for display
       studentName: studentName,
       studentEmail: studentEmail,
       studentUSN: studentUSN,

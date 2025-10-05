@@ -16,6 +16,7 @@ import Card from '../ui/Card';
 interface ResumeFile {
   id: string;
   fileName: string;
+  storageFileName: string;
   studentUSN: string;
   uploadDate: string;
   fileSize: number;
@@ -124,22 +125,55 @@ const StudentResumeManager: React.FC<StudentResumeManagerProps> = ({
 
   const handleDownload = async (resume: ResumeFile) => {
     try {
-      const response = await fetch(resume.downloadUrl);
+      // Use the proxy download endpoint instead of direct Cloudinary URL
+      const response = await fetch(`/api/resumes/download/${resume.storageFileName}`);
+      
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
+        
+        // Use the original filename for download
         a.download = resume.fileName;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
+      } else {
+        console.error('Download failed:', response.status, response.statusText);
+        setUploadStatus({ type: 'error', message: 'Failed to download file' });
       }
     } catch (error) {
       console.error('Download error:', error);
+      setUploadStatus({ type: 'error', message: 'Network error. Please try again.' });
     }
   };
+
+  const handleDelete = async (resume: ResumeFile) => {
+    if (!confirm(`Are you sure you want to delete "${resume.fileName}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/resumes/delete/${resume.storageFileName}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setUploadStatus({ type: 'success', message: 'Resume deleted successfully!' });
+        // Reload resumes
+        loadResumes();
+      } else {
+        setUploadStatus({ type: 'error', message: data.message || 'Failed to delete resume' });
+      }
+    } catch (error) {
+      setUploadStatus({ type: 'error', message: 'Network error. Please try again.' });
+    }
+  };
+
 
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
@@ -276,15 +310,25 @@ const StudentResumeManager: React.FC<StudentResumeManagerProps> = ({
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDownload(resume)}
-                  >
-                    <Download className="w-4 h-4" />
-                  </Button>
-                </div>
+                        <div className="flex items-center space-x-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDownload(resume)}
+                            title="Download resume"
+                          >
+                            <Download className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDelete(resume)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20"
+                            title="Delete resume"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
               </div>
             ))}
           </div>

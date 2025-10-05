@@ -937,35 +937,198 @@ const ContactSection: React.FC = () => {
   );
 };
 
-// Compact Footer
+// Compact Footer with Teams Click Dropdown
 const Footer: React.FC = () => {
+  const [isTeamsDropdownOpen, setIsTeamsDropdownOpen] = useState(false);
+  const mobileDropdownRef = React.useRef<HTMLDivElement>(null);
+  const desktopDropdownRef = React.useRef<HTMLDivElement>(null);
+  
+  const teamMembers = [
+    {
+      id: "1",
+      name: "Thoofik Usmaan A",
+      role: "Team Member",
+      linkedinUrl: "https://www.linkedin.com/in/thoofik-usmaan-a-2b93a9254/"
+    },
+    {
+      id: "2", 
+      name: "Manjumadhav VA",
+      role: "Team Member",
+      linkedinUrl: "https://www.linkedin.com/in/manjumadhav-va/"
+    },
+    {
+      id: "3",
+      name: "Shadabur Rahaman",
+      role: "Team Member", 
+      linkedinUrl: "https://www.linkedin.com/in/shadabur-rahaman-1b5703249/"
+    },
+    {
+      id: "4",
+      name: "Nishanth K R",
+      role: "Team Member",
+      linkedinUrl: "https://www.linkedin.com/in/nishanth-k-r-107895258/"
+    },
+    {
+      id: "5",
+      name: "Kartik Gopal",
+      role: "Team Member",
+      linkedinUrl: "https://www.linkedin.com/in/kartik-gopal-4552452a1/"
+    },
+    {
+      id: "6",
+      name: "Shankarok",
+      role: "Team Member",
+      linkedinUrl: "https://www.linkedin.com/in/shankarok/"
+    }
+  ];
+
+  const handleLinkedInClick = (url: string) => {
+    window.open(url, '_blank');
+  };
+
+  const handleToggleDropdown = () => {
+    setIsTeamsDropdownOpen(!isTeamsDropdownOpen);
+  };
+
+  const handleCloseDropdown = () => {
+    setIsTeamsDropdownOpen(false);
+  };
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const isOutsideMobile = mobileDropdownRef.current && !mobileDropdownRef.current.contains(event.target as Node);
+      const isOutsideDesktop = desktopDropdownRef.current && !desktopDropdownRef.current.contains(event.target as Node);
+      
+      if (isOutsideMobile && isOutsideDesktop) {
+        setIsTeamsDropdownOpen(false);
+      }
+    };
+
+    if (isTeamsDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isTeamsDropdownOpen]);
+
   return (
-    <footer className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 text-white py-6 sm:py-8 relative overflow-hidden w-full">
+    <footer className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900/20 text-white py-6 sm:py-8 relative w-full">
       <div className="absolute inset-0 bg-pattern opacity-10 dark:opacity-20" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
           {/* Logo and Institution Info */}
           <div className="flex items-center space-x-3 sm:space-x-4">
-                         <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-white p-1">
-               <Image 
-                 src="/pesitm-logo.jpeg" 
-                 alt="PESITM Logo" 
-                 width={64}
-                 height={64}
-                 className="w-full h-full object-contain"
-                 loading="lazy"
-               />
-             </div>
-            <div>
-              <h3 className="text-sm sm:text-lg font-bold">PES Institute of Technology and Management</h3>
-              <p className="text-blue-100 dark:text-blue-200 text-xs sm:text-sm">CSD Department</p>
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-white p-1">
+              <Image 
+                src="/pesitm-logo.jpeg" 
+                alt="PESITM Logo" 
+                width={64}
+                height={64}
+                className="w-full h-full object-contain"
+                loading="lazy"
+              />
+            </div>
+            <div className="flex items-center gap-2 sm:gap-0">
+              <div>
+                <h3 className="text-sm sm:text-lg font-bold">PES Institute of Technology and Management</h3>
+                <p className="text-blue-100 dark:text-blue-200 text-xs sm:text-sm">CSD Department</p>
+              </div>
+              
+              {/* Teams Click Dropdown - Right beside text on mobile */}
+              <div className="relative sm:hidden" ref={mobileDropdownRef}>
+                <button 
+                  onClick={handleToggleDropdown}
+                  className="flex items-center space-x-1 px-2 py-1 bg-white/10 hover:bg-white/20 rounded-lg transition-colors duration-300 border border-white/20 cursor-pointer"
+                >
+                  <Users className="w-3 h-3" />
+                  <span className="text-xs font-medium">Our Team</span>
+                </button>
+                
+                {/* Mobile Dropdown */}
+                {isTeamsDropdownOpen && (
+                  <div className="absolute bottom-full right-0 mb-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 z-[9999] animate-in slide-in-from-bottom-2 duration-200">
+                    {/* Arrow */}
+                    <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white dark:border-t-gray-800"></div>
+                    <div className="p-3">
+                      <div className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 flex items-center space-x-2">
+                        <Users className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                        <span>Our Team</span>
+                      </div>
+                      <div className="space-y-1">
+                        {teamMembers.map((member) => (
+                          <button
+                            key={member.id}
+                            onClick={() => handleLinkedInClick(member.linkedinUrl)}
+                            className="w-full flex items-center justify-between p-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 text-left group/item"
+                          >
+                            <div className="flex items-center space-x-2">
+                              <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                                <Users className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+                              </div>
+                              <div>
+                                <div className="text-xs font-medium text-gray-800 dark:text-gray-100">{member.name}</div>
+                                <div className="text-xs text-gray-500 dark:text-gray-400">{member.role}</div>
+                              </div>
+                            </div>
+                            <ExternalLink className="w-3 h-3 text-gray-400 group-hover/item:text-blue-600 dark:group-hover/item:text-blue-400 transition-colors duration-200" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           
-          
-          
-          
+          {/* Teams Click Dropdown - Desktop version */}
+          <div className="relative hidden sm:block" ref={desktopDropdownRef}>
+            <button 
+              onClick={handleToggleDropdown}
+              className="flex items-center space-x-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors duration-300 border border-white/20 cursor-pointer"
+            >
+              <Users className="w-4 h-4" />
+              <span className="text-sm font-medium">Our Team</span>
+            </button>
+            
+            {/* Click Dropdown */}
+            {isTeamsDropdownOpen && (
+              <div className="absolute bottom-full right-0 mb-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 z-[9999] animate-in slide-in-from-bottom-2 duration-200">
+                {/* Arrow */}
+                <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white dark:border-t-gray-800"></div>
+                <div className="p-3">
+                  <div className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 flex items-center space-x-2">
+                    <Users className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <span>Our Team</span>
+                  </div>
+                  <div className="space-y-1">
+                    {teamMembers.map((member) => (
+                      <button
+                        key={member.id}
+                        onClick={() => handleLinkedInClick(member.linkedinUrl)}
+                        className="w-full flex items-center justify-between p-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 text-left group/item"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                            <Users className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-medium text-gray-800 dark:text-gray-100">{member.name}</div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400">{member.role}</div>
+                          </div>
+                        </div>
+                        <ExternalLink className="w-3 h-3 text-gray-400 group-hover/item:text-blue-600 dark:group-hover/item:text-blue-400 transition-colors duration-200" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
         
         <div className="border-t border-white/20 mt-4 sm:mt-6 pt-3 sm:pt-4 text-center">

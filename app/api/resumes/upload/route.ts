@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 
     // Store file metadata
     const fileMetadata = {
-      id: uploadResult.publicId || `${studentUSN}_${timestamp}`,
+      id: uploadResult.key || `${studentUSN}_${timestamp}`,
       originalName: file.name,
       fileName: uploadResult.originalFileName || file.name,
       studentName: studentName,
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
       fileType: file.type,
       filePath: uploadResult.fileUrl || '',
       downloadUrl: uploadResult.fileUrl || '',
-      publicId: uploadResult.publicId || ''
+      key: uploadResult.key || ''
     };
 
     return NextResponse.json({ 

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '../contexts/ThemeContext';
+import { SocketProvider } from '../contexts/SocketContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -88,9 +89,11 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} min-h-screen overflow-x-hidden`}>
         <ThemeProvider>
-          <div className="min-h-screen w-full">
-            {children}
-          </div>
+          <SocketProvider>
+            <div className="min-h-screen w-full">
+              {children}
+            </div>
+          </SocketProvider>
         </ThemeProvider>
       </body>
     </html>

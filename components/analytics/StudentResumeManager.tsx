@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
+import { useSocket } from '../../contexts/SocketContext';
 
 interface ResumeFile {
   id: string;
@@ -35,6 +36,7 @@ const StudentResumeManager: React.FC<StudentResumeManagerProps> = ({
   studentName, 
   studentEmail 
 }) => {
+  const { socket, isConnected } = useSocket();
   const [resumes, setResumes] = useState<ResumeFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,6 +54,38 @@ const StudentResumeManager: React.FC<StudentResumeManagerProps> = ({
   useEffect(() => {
     loadResumes();
   }, [studentUSN]);
+
+  // Socket connection and real-time updates
+  useEffect(() => {
+    if (socket && isConnected) {
+      // Join student-specific room for targeted updates
+      socket.emit('join-student-room', studentUSN);
+      
+      // Listen for resume updates
+      socket.on('resume-uploaded', (data: { studentUSN: string; resume: ResumeFile }) => {
+        if (data.studentUSN.toLowerCase() === studentUSN.toLowerCase()) {
+          console.log('Real-time update: Resume uploaded', data.resume);
+          setResumes(prev => [data.resume, ...prev]);
+          setUploadStatus({ type: 'success', message: 'Resume uploaded successfully!' });
+        }
+      });
+
+      socket.on('resume-deleted', (data: { studentUSN: string; resumeId: string }) => {
+        if (data.studentUSN.toLowerCase() === studentUSN.toLowerCase()) {
+          console.log('Real-time update: Resume deleted', data.resumeId);
+          setResumes(prev => prev.filter(resume => resume.id !== data.resumeId));
+          setUploadStatus({ type: 'success', message: 'Resume deleted successfully!' });
+        }
+      });
+
+      // Cleanup on unmount
+      return () => {
+        socket.emit('leave-student-room', studentUSN);
+        socket.off('resume-uploaded');
+        socket.off('resume-deleted');
+      };
+    }
+  }, [socket, isConnected, studentUSN]);
 
   const loadResumes = async () => {
     try {
@@ -266,6 +300,13 @@ const StudentResumeManager: React.FC<StudentResumeManagerProps> = ({
               <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             </div>
             <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">My Resumes</h3>
+            {/* Real-time connection indicator */}
+            <div className="flex items-center space-x-2">
+              <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {isConnected ? 'Live updates' : 'Offline'}
+              </span>
+            </div>
           </div>
           <Button 
             variant="outline" 

@@ -65,6 +65,7 @@ export async function POST(request: NextRequest) {
       id: uploadResult.key || `${studentUSN}_${timestamp}`,
       originalName: file.name,
       fileName: uploadResult.originalFileName || file.name,
+      storageFileName: storageFileName,
       studentName: studentName,
       studentEmail: studentEmail,
       studentUSN: studentUSN,
@@ -75,6 +76,25 @@ export async function POST(request: NextRequest) {
       downloadUrl: uploadResult.fileUrl || '',
       key: uploadResult.key || ''
     };
+
+    // Broadcast real-time update to all connected clients for this student
+    try {
+      await fetch(`${process.env.NODE_ENV === 'production' 
+        ? 'https://csd-department-website-a2bttkp47-thoofiks-projects.vercel.app' 
+        : 'http://localhost:3000'}/api/broadcast`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'resume-uploaded',
+          studentUSN: studentUSN,
+          data: { resume: fileMetadata }
+        }),
+      });
+    } catch (broadcastError) {
+      console.log('Broadcast failed (non-critical):', broadcastError);
+    }
 
     return NextResponse.json({ 
       success: true, 

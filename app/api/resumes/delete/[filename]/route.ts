@@ -33,6 +33,25 @@ export async function DELETE(
       const success = await deleteResume(filePath);
       
       if (success) {
+        // Broadcast real-time update to all connected clients for this student
+        try {
+          await fetch(`${process.env.NODE_ENV === 'production' 
+            ? 'https://csd-department-website-a2bttkp47-thoofiks-projects.vercel.app' 
+            : 'http://localhost:3000'}/api/broadcast`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              action: 'resume-deleted',
+              studentUSN: studentUSN,
+              data: { resumeId: filename }
+            }),
+          });
+        } catch (broadcastError) {
+          console.log('Broadcast failed (non-critical):', broadcastError);
+        }
+
         return NextResponse.json({ 
           success: true, 
           message: 'Resume deleted successfully' 

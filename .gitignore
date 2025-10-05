@@ -104,3 +104,4 @@ temp/
 
 # Uploaded files (should not be committed)
 public/uploads/
+.vercel

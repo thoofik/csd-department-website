@@ -6,7 +6,6 @@ import NewNavigation from '../../../../components/layout/NewNavigation';
 import { ArrowLeft, Award, CheckCircle, Target, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Student } from '../../../../types';
-import StudentResumeManager from '../../../../components/analytics/StudentResumeManager';
 
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 
@@ -238,15 +237,6 @@ const StudentDetailPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Resume Management Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow mt-8">
-          <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">Resume Management</h2>
-          <StudentResumeManager 
-            studentUSN={student.usn}
-            studentName={student.name}
-            studentEmail={`${student.usn.toLowerCase()}@pestrust.edu.in`}
-          />
-        </div>
       </div>
     </main>
   );

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { listAllResumes } from '../../../../lib/googleCloudStorage';
+import { listAllResumes } from '../../../../lib/firebaseStorage';
 
 export async function GET(request: NextRequest) {
   try {

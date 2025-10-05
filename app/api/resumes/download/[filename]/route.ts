@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSignedDownloadUrl } from '../../../../../lib/googleCloudStorage';
+import { getDownloadUrl } from '../../../../../lib/firebaseStorage';
 
 export async function GET(
   request: NextRequest,
@@ -31,11 +31,11 @@ export async function GET(
     const filePath = `resumes/${studentUSN}/${filename}`;
     
     try {
-      // Generate signed URL for secure download
-      const signedUrl = await getSignedDownloadUrl(filePath);
+      // Generate download URL
+      const downloadUrl = getDownloadUrl(filePath);
       
-      // Redirect to the signed URL
-      return NextResponse.redirect(signedUrl);
+      // Redirect to the download URL
+      return NextResponse.redirect(downloadUrl);
       
     } catch (error) {
       console.error('Error generating download URL:', error);

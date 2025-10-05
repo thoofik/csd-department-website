@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { deleteResume } from '../../../../../lib/googleCloudStorage';
+import { deleteResume } from '../../../../../lib/firebaseStorage';
 
 export async function DELETE(
   request: NextRequest,

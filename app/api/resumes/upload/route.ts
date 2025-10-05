@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { uploadToGoogleCloudStorage } from '../../../../lib/googleCloudStorage';
+import { uploadToFirebaseStorage } from '../../../../lib/firebaseStorage';
 
 export async function POST(request: NextRequest) {
   try {
@@ -50,13 +50,13 @@ export async function POST(request: NextRequest) {
     const fileExtension = file.name.split('.').pop();
     const storageFileName = `${studentUSN}_${timestamp}.${fileExtension}`;
 
-    // Upload to Google Cloud Storage
-    const uploadResult = await uploadToGoogleCloudStorage(buffer, storageFileName, file.type, studentUSN, file.name);
+    // Upload to Firebase Storage
+    const uploadResult = await uploadToFirebaseStorage(buffer, storageFileName, file.type, studentUSN, file.name);
 
     if (!uploadResult.success) {
       return NextResponse.json({ 
         success: false, 
-        message: uploadResult.message || 'Failed to upload to Google Cloud Storage' 
+        message: uploadResult.message || 'Failed to upload to Firebase Storage' 
       });
     }
 
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ 
       success: true, 
-      message: 'File uploaded successfully to Google Cloud Storage',
+      message: 'File uploaded successfully to Firebase Storage',
       file: fileMetadata
     });
 

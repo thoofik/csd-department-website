@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { listAllResumes } from '../../../../lib/firebaseStorage';
+import { listAllResumes } from '../../../../lib/awsS3Storage';
 
 export async function GET(request: NextRequest) {
   try {

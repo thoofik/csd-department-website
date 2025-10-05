@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { uploadToFirebaseStorage } from '../../../../lib/firebaseStorage';
+import { uploadToS3 } from '../../../../lib/awsS3Storage';
 
 export async function POST(request: NextRequest) {
   try {
@@ -50,13 +50,13 @@ export async function POST(request: NextRequest) {
     const fileExtension = file.name.split('.').pop();
     const storageFileName = `${studentUSN}_${timestamp}.${fileExtension}`;
 
-    // Upload to Firebase Storage
-    const uploadResult = await uploadToFirebaseStorage(buffer, storageFileName, file.type, studentUSN, file.name);
+    // Upload to AWS S3
+    const uploadResult = await uploadToS3(buffer, storageFileName, file.type, studentUSN, file.name);
 
     if (!uploadResult.success) {
       return NextResponse.json({ 
         success: false, 
-        message: uploadResult.message || 'Failed to upload to Firebase Storage' 
+        message: uploadResult.message || 'Failed to upload to AWS S3' 
       });
     }
 
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ 
       success: true, 
-      message: 'File uploaded successfully to Firebase Storage',
+      message: 'File uploaded successfully to AWS S3',
       file: fileMetadata
     });
 

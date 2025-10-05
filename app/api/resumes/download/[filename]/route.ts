@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDownloadUrl } from '../../../../../lib/firebaseStorage';
+import { getSignedDownloadUrl } from '../../../../../lib/awsS3Storage';
 
 export async function GET(
   request: NextRequest,
@@ -31,10 +31,10 @@ export async function GET(
     const filePath = `resumes/${studentUSN}/${filename}`;
     
     try {
-      // Generate download URL
-      const downloadUrl = getDownloadUrl(filePath);
+      // Generate signed download URL
+      const downloadUrl = await getSignedDownloadUrl(filePath);
       
-      // Redirect to the download URL
+      // Redirect to the signed URL
       return NextResponse.redirect(downloadUrl);
       
     } catch (error) {

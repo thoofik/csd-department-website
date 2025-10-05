@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { deleteResume } from '../../../../../lib/firebaseStorage';
+import { deleteResume } from '../../../../../lib/awsS3Storage';
 
 export async function DELETE(
   request: NextRequest,

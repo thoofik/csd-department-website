@@ -125,8 +125,25 @@ const StudentResumeManager: React.FC<StudentResumeManagerProps> = ({
 
   const handleDownload = async (resume: ResumeFile) => {
     try {
-      // Use the download endpoint which will redirect to signed URL
-      window.open(`/api/resumes/download/${resume.storageFileName}`, '_blank');
+      // Use the proxy download endpoint
+      const response = await fetch(`/api/resumes/download/${resume.storageFileName}`);
+      
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        
+        // Use the original filename for download
+        a.download = resume.fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } else {
+        console.error('Download failed:', response.status, response.statusText);
+        setUploadStatus({ type: 'error', message: 'Failed to download file' });
+      }
     } catch (error) {
       console.error('Download error:', error);
       setUploadStatus({ type: 'error', message: 'Network error. Please try again.' });
